@@ -5,6 +5,7 @@
 $tableFacility = 'DBO.FACILITY_TABLE';
 $tableFloorCode = 'DBO.FLOOR_CODE';
 $tableRoom = 'DBO.ROOM';
+$tableRoomView = 'DBO.ROOM_VIEW';
 $tableRoomType = 'DBO.ROOM_TYPE';
 $tableRoomAssignment = 'DBO.ROOM_ASSIGNMENT';
 $tableRoomAssignmentOccupant = 'DBO.ROOM_ASSIGNMENT_OCCUPANT';
@@ -51,7 +52,7 @@ function getAstraInfo($netID, $reload) {
 			//if (!(array_key_exists($response->action->code, $returnArr[$response->role->code]))) {  //If role code does not exist as key in return array, add key
 			//		$returnArr[$response->role->code][$response->action->code] = array();
 			//}
-			foreach ($response->spanOfControlCollection as $spanOfControl) {  //Add span(s) of control 
+			foreach ($response->spanOfControlCollection as $spanOfControl) {  //Add span(s) of control
 				//$returnArr[$response->role->code][] = $spanOfControl->code;
 				$returnArr[$response->role->code][] = array($spanOfControl->code,$spanOfControl->codeDescription);
 				//if (!(array_key_exists($spanOfControl->kind, $returnArr[$response->role->code][$response->action->code]))) {  //If role code does not exist as key in return array, add key
@@ -59,7 +60,7 @@ function getAstraInfo($netID, $reload) {
 				//}
 				//$returnArr[$response->role->code][$response->action->code][$spanOfControl->kind][] = array($spanOfControl->code,$spanOfControl->codeDescription);
 			}
-		} else { 
+		} else {
 			return array(); //Return empty array if netID arg doesn't match returned netID.  Check not necessary?
 		}
 	}
@@ -119,7 +120,7 @@ function checkOrgRoles($astraAuthz, $orgCode) {
   //Check for OrgUser
 	if (isset($astraAuthz['OrgUser'])) {
 		$orgAuthz = $astraAuthz['OrgUser'];
-		foreach ($orgAuthz as $auth) { //Loop through org code authorizations	
+		foreach ($orgAuthz as $auth) { //Loop through org code authorizations
 			// CAMPUS
 			//Check first three digits of org code against authorization.
 			if ((substr($orgCode,0,1) === substr($auth[0],0,1)) && (substr($auth[0],1,9) == 0)) {
@@ -165,7 +166,7 @@ function checkOrgRoles($astraAuthz, $orgCode) {
 	}
 	return 0;
 }
-  
+
 //Check for ASTRA authorizations
 function checkRoomAuthz($conn, $astraAuthz, $facCode, $roomNum, $assignmentOrg) {
 	//echo '-:'.$assignmentOrg.':-';
@@ -176,7 +177,7 @@ function checkRoomAuthz($conn, $astraAuthz, $facCode, $roomNum, $assignmentOrg) 
 		if (isset($astraAuthz['SuperUser'])) {
   		return 'SU';
   	}
-  
+
 		//Check for FacUser
   	if (isset($astraAuthz['FacUser'])) {
   		$facAuthz = $astraAuthz['FacUser'];
@@ -189,7 +190,7 @@ function checkRoomAuthz($conn, $astraAuthz, $facCode, $roomNum, $assignmentOrg) 
 				}
 			}
 		}
-  
+
   	//Start org code checks: OrgUser, Cascadia, HMC.
   	//First check against room assignment org code, if given.
   	if (isset($assignmentOrg) && $assignmentOrg != '') {
@@ -207,7 +208,7 @@ function checkRoomAuthz($conn, $astraAuthz, $facCode, $roomNum, $assignmentOrg) 
  			}
  		}
   }
-	
+
   return 0;
 }
 
@@ -284,7 +285,7 @@ function makeQuery($conn, $queryStr, $bindArray) {
 		//if (!(is_null($bindArray[$key][2]))) oci_bind_by_name($stid, $bindArray[$key][1], $bindArray[$key][2], $bindArray[$key][3], $bindArray[$key][4]);
 		$queryVals[] = $bindArray[$key][2];
 	}
-	
+
 	//Execute query
 	odbc_execute($stid, $queryVals);
 	$returnvar = odbc_num_rows($stid); //PHP ODBC documentation says odbc_num_rows is not supported in a SELECT statememt and returns -1 in all circumstances

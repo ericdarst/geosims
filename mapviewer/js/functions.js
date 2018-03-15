@@ -81,7 +81,7 @@ function dojoOnLoad() {
   // where the argument ioArgs is of type: dojo.__XhrArgs (or) dojo.io.script.__ioArgs
   esri.setRequestPreCallback(myCallbackFunction);
 	**/
-	
+
 	helpTooltip = new CustomDynamicTooltip({
     connectId: [],
     label: "",
@@ -89,14 +89,14 @@ function dojoOnLoad() {
     defClassAttr:"data-sims-helpClass",
     defValueAttr:"data-sims-helpValue"
   });
-  
+
 	//Initialize infoWindow popup
 	var popup = new esri.dijit.Popup(null, dojo.create("div"));
 
 	//Define custom map extent
 	//Currently: UW Seattle
 	var startExtent = new esri.geometry.Extent(-13616761.863110848,6048279.3671294805,-13613059.444553185,6051007.213576479, new esri.SpatialReference({wkid:3857}));
-	
+
 	//Initialize map variable
 	map = new esri.Map("mapDiv", {
 		extent: startExtent,
@@ -107,7 +107,7 @@ function dojoOnLoad() {
           "navigationMode": "css-transforms"
 	});
 
-	//Place the popup under the map's root element. This ensures that the coordinate space used by the popup for positioning aligns with the map's coordinate space. 
+	//Place the popup under the map's root element. This ensures that the coordinate space used by the popup for positioning aligns with the map's coordinate space.
 	dojo.place(popup.domNode, map.root);
 
 	//initialize infoWindow variables
@@ -139,7 +139,7 @@ function dojoOnLoad() {
 	errorSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_FORWARD_DIAGONAL,
 		new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_DASH, new dojo.Color([255,0,0,1]), 2),
 		new dojo.Color([255,50,50,.5]));
-	facSelSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, 
+	facSelSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
     new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([98,194,204]), 2),
     new dojo.Color([98,194,204,0.75]));
 
@@ -159,10 +159,10 @@ function dojoOnLoad() {
 	//backgroundServiceLayer = new esri.layers.ArcGISDynamicMapServiceLayer("https://geosims.cpo.uw.edu/arcgis/rest/services/Basemap_dyn/MapServer");
 
 	basemap =  new esri.layers.ArcGISTiledMapServiceLayer("https://server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer");
-	
+
 	facQueryTask = new esri.tasks.QueryTask("https://geosims.cpo.uw.edu/arcgis/rest/services/Basemap/MapServer/2");
 	//facQueryTask = new esri.tasks.QueryTask("https://geosims.cpo.uw.edu/arcgis/rest/services/Basemap/MapServer/7");
-	
+
 	//Connect layers to events
 	dojo.connect(roomsServiceLayer, "onError", function(error) {
 		console.log("roomsServiceLayer onError: ", error);
@@ -197,7 +197,7 @@ function dojoOnLoad() {
       bookmarks[0].extent.xmax = map.extent.xmax;
       bookmarks[0].extent.ymax = map.extent.ymax;
     }
-	
+
 		//Check to see if rooms should be classified on update end
 		if (currentRoomClassification["RETURN"] && currentRoomClassification["WHERE"]) {
 			//Update query to current facNum and floor
@@ -231,7 +231,7 @@ function dojoOnLoad() {
 	dojo.connect(dojo.byId("chartTitleNode-close"), "onclick", function(evt) {
 		setHash('','');
 	});
-	
+
 	map.addLayer(basemap,0); //Add ESRI basemap at index 0 behind UW basemap
 	map.addLayer(backgroundServiceLayer); //Add UW basemap
 
@@ -297,7 +297,7 @@ function dojoOnLoad() {
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('O.ORG_NAME');
-			
+
 		}
 	});
 	var menuItem2 = new dijit.MenuItem({
@@ -305,7 +305,7 @@ function dojoOnLoad() {
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('OD.ORG_DEPT_NAME');
-			
+
 		}
 	});
 	var menuItem3 = new dijit.MenuItem({
@@ -330,6 +330,13 @@ function dojoOnLoad() {
 		}
 	});
 	var menuItem6 = new dijit.MenuItem({
+		label: "Occupancy",
+		//iconClass: "dijitEditorIcon dijitEditorIconSave",
+		onClick: function() {
+			classSelOnChange('RV.Occupancy');
+		}
+	});
+	var menuItem7 = new dijit.MenuItem({
 		label: "Last Confirmed",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
@@ -343,6 +350,7 @@ function dojoOnLoad() {
 	classMenu.addChild(menuItem4);
 	classMenu.addChild(menuItem5);
 	classMenu.addChild(menuItem6);
+	classMenu.addChild(menuItem7);
 	var classButton = new dijit.form.DropDownButton({
     label: "Classify",
     name: "classButton",
@@ -368,7 +376,7 @@ function dojoOnLoad() {
 		}
 	});
 	gridRA_storeEmpty.storeKind = 'RA';
-	
+
 	//Create empty gridBdgt store
 	gridBdgt_storeEmpty = new dojo.data.ItemFileWriteStore({
 		data : {
@@ -376,7 +384,7 @@ function dojoOnLoad() {
 		}
 	});
 	gridBdgt_storeEmpty.storeKind = 'RAB';
-	
+
 	//Create empty gridRAU store
 	gridRAU_storeEmpty = new dojo.data.ItemFileWriteStore({
 		data : {
@@ -384,7 +392,7 @@ function dojoOnLoad() {
 		}
 	});
 	gridRAU_storeEmpty.storeKind = 'RAU';
-	
+
 	//Create empty gridRAO store
 	gridRAO_storeEmpty = new dojo.data.ItemFileWriteStore({
 		data : {
@@ -392,7 +400,7 @@ function dojoOnLoad() {
 		}
 	});
 	gridRAO_storeEmpty.storeKind = 'RAO';
-	
+
 	qStore_org = new CustomQueryReadStore({url:'common/php/organizations.php', requestMethod:'get'}); //Create query store for organizations
 	qStore_emp = new CustomQueryReadStore({url:'common/php/employees.php', requestMethod:'get'}); //Create query store for employees
 	qStore_bdgt = new CustomQueryReadStore({url:'common/php/budgets.php', requestMethod:'get'}); //Create query store for budgets
@@ -529,9 +537,9 @@ function mapOnLoad() {
   });
 
 	esri.show(dojo.byId("northArrow")); //Show North Arrow
-	
+
 	measureToolConfig();
-	
+
   dojo.connect(dijit.byId('mapDiv'), 'resize', map, map.resize); //Connect map div resize event to resizeMap function
 	dijit.byId('chartPane').lastWidth = dijit.byId('chartPane').containerNode.clientWidth; //Save chartPane's width
 	//Connect map div resize event to resize chart function
@@ -546,7 +554,7 @@ function mapOnLoad() {
 	roomsGraphicsLayer = new esri.layers.GraphicsLayer({id:"gfxLayer_roomsHover"});	//create graphics layer for room hover
 	roomInfoGraphicsLayer = new esri.layers.GraphicsLayer({id:"gfxLayer_roomsSelect"}); //create graphics layer for room select
 	facsGraphicsLayer = new esri.layers.GraphicsLayer({id:"gfxLayer_facsQuery"}); //create graphics layer for facility select
-	
+
 	//Create query parameters for facility layer
 	var facQuery = new esri.tasks.Query();
 	facQuery.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
@@ -558,7 +566,7 @@ function mapOnLoad() {
 		facQuery.geometry = evt.mapPoint;
 		facQueryTask.execute(facQuery);
 	});
-	
+
 	//Process results of facQueryTask
 	dojo.connect(facQueryTask, "onComplete", function(queryResult) {
 		//console.log(queryResult);
@@ -632,11 +640,11 @@ function mapOnLoad() {
     	},750);
     }
 	});
-	
+
 	dojo.connect(roomsFeatureLayer, "onDblClick", function(evt) {
 		dojo.stopEvent(evt);
 	});
-	
+
 	//Connect to graphics layer onClick event
 	dojo.connect(roomsFeatureLayer, "onClick", function(evt) {
 		//console.log(evt);
@@ -646,11 +654,11 @@ function mapOnLoad() {
 		var clickPoint = evt.screenPoint;
 		openRoomInfo(clickedRoomNum, clickPoint);
 	});
-	
+
 	dojo.connect(map,"onPanEnd", function(extent, startPoint) {
 		map.isPanning = false;
 	});
-	
+
 	dojo.connect(map,"onPanStart", function(extent, startPoint) {
 		map.isPanning = true;
 	});
@@ -689,7 +697,7 @@ function mapOnLoad() {
 			gridBdgt=null;
 		}
 	});
-	
+
 	gridRoom_layout = [
 		{
     	onAfterRow: function(rowIndex, subRows, rowNode) {
@@ -722,14 +730,14 @@ function mapOnLoad() {
     				if (cell.options[valIdx]) {
     					var valLabel = cell.options[valIdx];
     				}
-    				
+
           	var helpWidget = new CustomGridCellHelp({
           		label:valLabel,
           		helpClass:cell.field,
           		helpValue:val,
           		tooltip:helpTooltip
           	});
-          	
+
           	return (helpWidget ? helpWidget : valLabel);
     			}
     		},{
@@ -783,7 +791,7 @@ function mapOnLoad() {
 	];
 
 	gridRA_layout = [
-	
+
 		{
 			onAfterRow: function(rowIndex, subRows, rowNode) {
 				//console.log({'onAfter' : rowIndex, 'subRows' : subRows});
@@ -1041,7 +1049,7 @@ function mapOnLoad() {
 					var valIdx = dojo.indexOf(cell.values, val.replace(/&amp;/g, "&"));  //Search for value in value list.  Decode any ampersands.
 					if (cell.options[valIdx]) {
 						var valLabel = cell.options[valIdx];
-    				
+
           	var helpWidget = new CustomGridCellHelp({
           		label:valLabel,
           		helpClass:cell.field,
@@ -1071,7 +1079,7 @@ function updateLayerVisibility(layerIdx, isVisible) {
 	if (dojo.indexOf(visible,-1) > -1) {
 		visible = [];
 	}
-	
+
 	//If layer is visible and is not in array, add to array
 	if (isVisible && dojo.indexOf(visible,layerIdx) == -1) {
 		 visible.push(layerIdx);
@@ -1156,11 +1164,11 @@ function setLayerDefs(ags_layer, new_facnum, new_floor, new_room) {
      	});
     }
 	}
-	
+
 	//Set definition query for roomsFeatureLayer
 	roomsFeatureLayer.setRenderer(roomsFeaturesRenderer);
 	roomsFeatureLayer.setDefinitionExpression("BUILDINGID = '" + new_facnum + "' AND FLOORCODE = '" + new_floor + "'");
-	
+
 	//Set Facility value
 	if(dijit.byId('facSelect')) {
 		var theFacSel = dijit.byId('facSelect');
@@ -1173,13 +1181,13 @@ function setLayerDefs(ags_layer, new_facnum, new_floor, new_room) {
 		theFloorSel.attr('value',floor);
 		setNewFloorDesc();
 	}
-	
+
 	//Delete/create new floor info chart
 	if(dojo.byId('chartNode').innerHTML != '') {
 		dojo.byId("chartTitleNode-type").innerHTML = '';
 		floorChart.destroy();
 	}
-	
+
 	if ((new_facnum != '') && (new_floor != '')) {
   	var setFloorSummaryDeferred = submitQuery(dojo.toJson({"FACNUM":new_facnum,"FLOOR":new_floor}),"mapviewer/php/summaryFloorOrgDeptCategory.php");
   	setFloorSummaryDeferred.addCallback(function(data) {
@@ -1210,7 +1218,7 @@ function setLayerDefs(ags_layer, new_facnum, new_floor, new_room) {
     	}
   	});
 	}
-	
+
 	if (facNum != '' && floor != '') {
   	//Create a new list item in the history list for the new floor
   	dojo.create("li", {
@@ -1244,7 +1252,7 @@ function getRoomExtent(roomNum) {
 }
 
 function measureToolConfig() {
-	
+
 	//Configure measurement tool
   //dojo.keys.copyKey maps to CTRL on windows and Cmd on Mac.
   var snapManager = map.enableSnapping({snapKey:dojo.keys.copyKey});
@@ -1256,18 +1264,18 @@ function measureToolConfig() {
 		defaultAreaUnit: esri.Units.SQUARE_FEET,
 		defaultLengthUnit: esri.Units.FEET
   }, "measurementDiv");
-  
+
   /**dojo.connect(measurement, "onMeasureEnd", function(activeTool){
     this.setTool(activeTool, false);
   });**/
-	
+
   measurement.startup();
 	esri.show(dojo.byId("measurementDiv-snaphelp"));
 }
-	
+
 //Opens the pop-up infoWindow for a room number at a given coordinate point
 function openRoomInfo(clickedRoomNum, clickPoint) {
-	
+
 	//Find graphic in map.graphics with roomNum, apply graphicSymbol and add to roomInfoGraphicsLayer
 	function highlightRoomByRmno(roomNum, graphicSymbol) {
 		roomInfoGraphicsLayer.clear();
@@ -1280,7 +1288,7 @@ function openRoomInfo(clickedRoomNum, clickPoint) {
 		});
 	}
 	highlightRoomByRmno(clickedRoomNum, roomInfoSymbol);
-	
+
 	var clickPoint_mapGeom = esri.geometry.toMapGeometry(map.extent, map.width, map.height, clickPoint); //Capture the click point
 
 	//Add clicked room to history list
@@ -1379,7 +1387,7 @@ function openRoomInfo(clickedRoomNum, clickPoint) {
   			var raOrg = thisGrid.store.getValue(selItem, "ASSIGNEE_ORGANIZATION");
   			var raEmp = thisGrid.store.getValue(selItem, "ASSIGNEE_EMPLOYEE_ID");
 				var raPer = thisGrid.store.getValue(selItem, "ASSIGNEE_ROOM_PERCENT");
-  			
+
   			//console.log(dojo.indexOf([raFac,raRm,raOrg,raEmp],""));
   			if (dojo.indexOf([raFac,raRm,raOrg,raEmp],"") == -1  && raPer != 0) { //Check if any RA identifiers are empty (new, unsubmitted room assignment)
     			//Set store messages
@@ -1390,7 +1398,7 @@ function openRoomInfo(clickedRoomNum, clickPoint) {
   				gridRAO.setStore(gridRAO_storeEmpty); //ROOM ASSIGNMENT OCCUPANT GRID
       		gridRAU.setStore(gridRAU_storeEmpty); //ROOM ASSIGNMENT USE GRID
       		gridBdgt.setStore(gridBdgt_storeEmpty); //BUDGET GRID
-      		
+
     			//Submit request for Room Assignment infos
     			var getRaInfoDeferred = submitQuery(dojo.toJson({"FACILITY_CODE":raFac,"ROOM_NUMBER":raRm,"ORGANIZATION":raOrg,"EMPLOYEE_ID":raEmp}),"mapviewer/php/listroomasgnmntinfo.php");
     			getRaInfoDeferred.addCallback(function(data) { //callback for RA info query
@@ -1473,12 +1481,12 @@ function openRoomInfo(clickedRoomNum, clickPoint) {
     			gridRAO.noDataMessage = ' ';
       		gridRAU.noDataMessage = ' ';
         	gridBdgt.noDataMessage = ' ';
-        		
+
     			//Clear RA subgrid datastores
     			gridRAO.setStore(gridRAO_storeEmpty); //ROOM ASSIGNMENT OCCUPANT GRID
         	gridRAU.setStore(gridRAU_storeEmpty); //ROOM ASSIGNMENT USE GRID
         	gridBdgt.setStore(gridBdgt_storeEmpty); //BUDGET GRID
-        	
+
         	//Hide add/delete column on child tables
         	dojo.forEach([gridRAO,gridRAU,gridBdgt], function(grid) {
             grid.layout.setColumnVisibility(0,false);
@@ -1537,7 +1545,7 @@ function openRoomInfo(clickedRoomNum, clickPoint) {
 		gridBdgt.canEdit = checkChildAuthz;
 		gridBdgt.onStartEdit = function(inCell, inRowIndex) {
 			if (helpTooltip) helpTooltip.close();
-			
+
 			if (inCell.declaredClass == "dojox.grid.cells._Widget" && inCell.widgetProps.store) {
 				inCell.widgetProps.store.RA_field = inCell.field;
 				inCell.widgetProps.store.RA_grid = inCell.grid;
@@ -1603,7 +1611,7 @@ function setRoomInfoStores(data) {
       			var confirmButtonContainer = dojo.create("div",{},null);
       			dojo.place(confirmButtonContainer,dialogContent,"last");
       			//var confirmContainer = dojo.create("div",{innerHTML: '<span class="confirmDate">' + confirmDate + '</span><span class="confirmUserContainer"' + (confirmUser ? '>': 'style="display:none">') + ', by <span class="confirmUser">' + confirmUser + '</span></span>',"class":"confirmText"},null);
-            
+
             var currButtonDialog = new dijit.TooltipDialog({
           		content: dialogContent
       			});
@@ -1613,7 +1621,7 @@ function setRoomInfoStores(data) {
               title: "Last confirmed correct",
               dropDown: currButtonDialog
           	});
-          	
+
           	var confirmButton = new dijit.form.Button({
             	label: "Confirm",
             	"class":"queryButton",
@@ -1624,11 +1632,11 @@ function setRoomInfoStores(data) {
       					//var thisRoomRoomNum = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ROOM_NUMBER")
       					var thisRoomFacCode = gridRoom_store.getValue(item, "FACILITY_CODE");
   							var thisRoomRoomNum = gridRoom_store.getValue(item, "ROOM_NUMBER");
-      					
+
       					var recordID = [{'FACILITY_CODE':thisRoomFacCode,'ROOM_NUMBER':thisRoomRoomNum}];
       					var onCurrentDeferred = submitQuery(dojo.toJson(recordID),"common/php/updateroomconfirm.php");
       					onCurrentDeferred.addCallback(function(data) {
-      						
+
         					if (data.rowsUpdated === 0) {
                 		postClientMessage({
         							text:"Not updated.",
@@ -1636,19 +1644,19 @@ function setRoomInfoStores(data) {
         						});
                 		return;
                 	}
-                	
+
                 	postClientMessage({
                 		text:"Updated.",
                 		type:"success"
                 	});
-                	
+
                 	//Set new confirm date and user values in data store
                 	dojo.disconnect(gridRoom_store.onSetListener);
         					gridRoom_store.setValue(item, 'CONFIRM_DATE', data.value['CONFIRM_DATE']);
         					gridRoom_store.setValue(item, 'CONFIRM_USER', data.value['CONFIRM_USER']);
         					gridRoom_store.save();
         					gridRoom_store.onSetListener = dojo.connect(gridRoom_store, "onSet", onSetFunction);
-        					
+
         					//Update date and user values in html
       						currButton.set('label',data.value['CONFIRM_DATE']);
       						//dojo.forEach([dialogContent,confirmContainer],function(container) {
@@ -1678,9 +1686,9 @@ function setRoomInfoStores(data) {
             		currButton.closeDropDown();
             	}
             }).placeAt(confirmButtonContainer);
-            
+
           	//dojo.place(confirmContainer,currButton.domNode,"last");
-  			
+
   			//dojo.byId("isCurrentButton_container").appendChild(currButton.domNode);
   			dojo.place(currButton.domNode, "isCurrentButton_container","only");
       }
@@ -1811,7 +1819,7 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 	}
 	console.log('UPDATED ITEM', setitem, attr, newVal);
 	var store = setitem._S;
-	
+
 	//Update associated name value if ID value is updated/inserted
 	if (dojo.indexOf(["ORGANIZATION","ASSIGNEE_ORGANIZATION","EMPLOYEE_ID","ASSIGNEE_EMPLOYEE_ID","OCCUPANT_EID","BUDGET_NUMBER"],attr) > -1) {
 		dojo.disconnect(setitem._S.onSetListener);
@@ -1848,12 +1856,12 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
   	}
 		setitem._S.onSetListener = dojo.connect(setitem._S, "onSet", onSetFunction);
 	}
-	
+
 	//Test to see if this is a new row
 	if (setitem.FACILITY_CODE[0] === null && setitem.ROOM_NUMBER[0] === null) {
 		var failure = false;
 		//if (setitem._S.storeKind.substr(0,2) != "R") {
-  		
+
   		if (setitem._S.storeKind == "RA") {
     		if (setitem.ASSIGNEE_ORGANIZATION[0] === null || setitem.ASSIGNEE_ORGANIZATION[0] == "") {
     			failure = true;
@@ -1919,12 +1927,12 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 		if (failure) {
 			return;
 		}
-		
+
 		var insertRecord = {
 			recordID:{},
 			insert:{}
 		};
-		
+
 		//Fetch item from room store to identify facility_code and room_number values
 		gridRoom_store.fetch({
 			onComplete: function(items,request) {
@@ -1941,7 +1949,7 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 				setitem._S.setValue(setitem, 'ROOM_NUMBER', returnVar.ROOM_NUMBER);
 				setitem._S.onSetListener = dojo.connect(setitem._S, "onSet", onSetFunction);
 				//console.log(setitem);
-				
+
 				insertRecord.recordID['kind'] = setitem._S.storeKind;
 				insertRecord.insert['FACILITY_CODE'] = returnVar.FACILITY_CODE;
 				insertRecord.insert['ROOM_NUMBER'] = returnVar.ROOM_NUMBER;
@@ -1973,7 +1981,7 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 					insertRecord.insert['BUDGET_NUMBER'] = setitem.BUDGET_NUMBER[0];
 					insertRecord.insert['PRIMARY_ROOM'] = setitem.PRIMARY_ROOM[0];
 				}
-				
+
 				var onInsertDeferred = submitQuery(dojo.toJson({"insertRecord":insertRecord}),"common/php/insertroominfo.php");
 				onInsertDeferred.addCallback(function(data) {
 					dojo.disconnect(store.onSetListener);
@@ -1992,10 +2000,10 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 			}
 		});
 		return;
-		
+
 	}
-	
-	
+
+
 	jsonVal = {
 		updateRecord:{
 			recordID:{},
@@ -2057,13 +2065,13 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 	}
 	//Define attribute and value to update
 	jsonVal.updateRecord.update[attr] = newVal;
-	
+
 	//If BUDGET_NUMBER is being updated, also update FISCAL_YEAR_ENTERED
 	if (attr == 'BUDGET_NUMBER') {
 		jsonVal.updateRecord.update['FISCAL_YEAR_ENTERED'] = jsonVal.updateRecord.recordID['FISCAL_YEAR_ENTERED']; //Add FISCAL_YEAR_ENTERED to update array
 		jsonVal.updateRecord.recordID['FISCAL_YEAR_ENTERED'] = oldFyVal; //Set recordID val for FY back to original value
 	}
-	
+
 	var onSetDeferred = submitQuery(dojo.toJson({"updateRecord":jsonVal.updateRecord}),"common/php/updateroominfo.php");
 	onSetDeferred.addCallback(function(data) {
 		crudCallback(data, jsonVal.updateRecord);
@@ -2081,22 +2089,22 @@ function crudCallback(data, request) {
 		crudErrorback(storeKind);
 		return;
 	}
-	
+
 	postClientMessage({
 		text:"Updated.",
 		type:"success"
 	});
-	
+
 	//Add entry to user actions history
 	if ("update" in request) {
 		for (var updatedField in request.update) {
 			var updatedField_value = request.update[updatedField];
-			
+
 			var historyListRoomListFirstChild = dojo.byId('historyList').firstChild.firstChild;
     	if (historyListRoomListFirstChild.nodeName == 'LI') {
     		historyListRoomListFirstChild = dojo.create("ul", {"class":"historyListRoomChanges"},dojo.byId('historyList').firstChild,"first");
     	}
-			
+
 			dojo.create("li", {
 					innerHTML: '<span class="fontBold">u: </span>' + updatedField + ': ' + updatedField_value,
 					"class": "historyRoomChange"
@@ -2126,8 +2134,8 @@ function crudCallback(data, request) {
   		},
   		historyListRoomListFirstChild,
   		"first");
-	}	
-	
+	}
+
 	if (storeKind == 'R') {
 		gridRoom_store.save();
 	} else if (storeKind == 'RA') {
@@ -2206,7 +2214,7 @@ function setFacAndFloorToHash() {
 				setFacSelect(data.results);
 			});
 			setFloorSelect([]);
-			
+
 			//Add rooms service layer on initial load
 			//console.log('loading layers..');
 			map.addLayer(roomsServiceLayer);
@@ -2468,7 +2476,7 @@ function generateChart(data, domNodeName) {
 	dojo.attr(domNodeName, "style", {
         height: divHeight + 'px'
 	});
-	
+
 	var chart = new dojox.charting.Chart(domNodeName);
 
 	chart.setTheme(dojox.charting.themes.Distinctive);
@@ -2484,7 +2492,7 @@ function generateChart(data, domNodeName) {
 		vAxis: "y2",
 		hAxis: "x2"
 	});
-	
+
 	/*chart.addPlot("chartgrid", {
 		type: "Grid",
     hMajorLines: false,
@@ -2492,18 +2500,18 @@ function generateChart(data, domNodeName) {
     vMajorLines: true,
     vMinorLines: false});*/
 
-	
+
 	/*var micros, minors = false;
 	if (orgLabels.length > 9) {
 		minors = true;
 	}*/
-		
+
 	chart.addAxis("y",{vertical: true, labels: orgLabels, fixLower: "none", fixUpper: "none", majorTickStep: 1, minorTicks: false, microTicks: false, majorTick:{length: 3}});
 	chart.addAxis("x", {leftBottom: false, fixLower: "none", fixUpper: "none", minorTicks: false, microTicks: false, majorTick:{length: 2}, includeZero: true});
 	chart.addAxis("y2",{vertical: true, leftBottom: false, labels: sqftLabels, fixLower: "none", fixUpper: "none", majorTickStep: 1, minorTicks: false, microTicks: false, majorTick:{length: 3}});
 	chart.addAxis("x2");
 	var spaceCategories = data["SPACE_CATEGORIES"];
-	
+
 	var colors = classColors["SPACE_CATEGORY"];
 	for (var spaceCategory in spaceCategories) {
 		//console.log([spaceCategory,spaceCategories[spaceCategory]]);
@@ -2517,7 +2525,7 @@ function generateChart(data, domNodeName) {
 
   var anim_b = new dojox.charting.action2d.Highlight(chart, "default");
   var anim_c = new dojox.charting.action2d.Tooltip(chart, "default", {text : chartTooltipFunc});
-  
+
   return chart;
 }
 
@@ -2551,7 +2559,7 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
     	}
     }
 	}
-	
+
 	//Check to see if unique value renderer is set correctly
 	var isNewRenderer = false;
 	if (!whereVars.ORS || (roomsFeatureLayer.renderer.declaredClass != "esri.renderer.UniqueValueRenderer") || ((roomsFeatureLayer.renderer.attributeField != returnVars[0]) || (roomsFeatureLayer.renderer.attributeField2 != returnVars[1]) || (roomsFeatureLayer.renderer.attributeField3 != returnVars[2]))) {
@@ -2577,14 +2585,14 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
 			currentRoomClassification.chartObjs = [];
 		}
 	}
-	
+
 	//Hide legend and do not query server if no FACNUM or R.FLOOR_CODE
 	if (!(whereVars["ANDS"]["FACNUM"] && whereVars["ANDS"]["R.FLOOR_CODE"])) {
 		dojo.byId("legend").innerHTML = '';
 		dojo.style("legend_container","display","none");
 		return;
 	}
-	
+
   var roomsByAttributeDeferred = submitQuery(dojo.toJson({"RETURN":returnVars.concat(["R.ROOM_NUMBER"]),"WHERE":whereVars}),"mapviewer/php/roomsByAttribute.php");
 	roomsByAttributeDeferred.addCallback(function(data) {
 		esri.hide(dojo.byId("loadingImg"));
@@ -2592,11 +2600,11 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
 			"newVals":[],
 			"oldVals":[]
 		};
-		
-		
-		
-		
-		
+
+
+
+
+
   	//dojo.forEach(roomsFeatureLayer.graphics, function(feature) {
   	//	if (!(dojo.some(data, function(qRoom) {
   	dojo.forEach(data, function(qRoom) {
@@ -2611,8 +2619,15 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
 						if (columnName == 'CONFIRM_DATE') {
     					(value == -1 ? value = "Never confirmed" : (Number(value) == 0 ? value = "Not applicable" : (Number(value) < 90 ? value = "Within 3 months" : (Number(value) < 365 ? value = "Within a year" : value = "Over a year"))));
     				}
+						//Transform occupancy value
+						if (columnName == 'Occupancy') {
+							console.log(Number(value));
+    					(!value ? value = "Not applicable" : (Number(value) == -1 ? value = "Capacity not set" : (Number(value) == 0 ? value = "Vacant" : (Number(value) < 1 ? value = "Under occupied" : (Number(value) == 1 ? value = "Fully occupied" : value = "Over occupied")))));
+							console.log(value);
+    				}
+
     				feature.attributes[attr] = value; //Assign returned value to attribute
-    				
+
     				if (idArgs.id.length != 0) {
 							idArgs.id += ':';
 						}
@@ -2645,12 +2660,12 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
 						var newClassSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, classStrokeRgb, 1), new dojo.Color([classFillRgb.r,classFillRgb.g,classFillRgb.b,classFillRgb.a]));
 						//console.log(idArgs);
 						roomsFeaturesClassRenderer.addValue(idArgs.id,newClassSymbol);
-						
+
 		    		if (chartObj) {
         			//chartObj.shape.setStroke({color:"#000"});
         			currentRoomClassification.chartObjs.push(chartObj);
         		}
-						
+
 						var legendItem_attr = idArgs[returnVars[0]];
 						if (!(dojo.byId('legItem-' + legendItem_attr))) {
 							dojo.style("legend_container","display","inline"); //Show legend div. redundant? not needed?
@@ -2671,7 +2686,7 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
   				}
   				return true;
   			}
-  		}))) { 
+  		}))) {
   			//if (!(whereVars.ORS) || isNewRenderer) { //If this is a query of all rooms on a floor, or a new renderer has been set
     		//	dojo.forEach(returnVars, function(attr) { //If room number isn't found in data results set attributes to ''
     		//		feature.attributes[attr] = '';
@@ -2683,7 +2698,7 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
   	if (whereVars.ORS && rendererValues.newVals.length == 0) {
   		dojo.forEach(rendererValues.oldVals, function(idArgs) {
   			roomsFeaturesClassRenderer.removeValue(idArgs.id); //Remove renderer value
-  			
+
   			//Check to see if necessary to remove legend value
   			var legendVal = idArgs.id.split(':')[0];
   			if (!(dojo.some(roomsFeaturesClassRenderer.values, function(rVal) {
@@ -2697,17 +2712,17 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
     				dojo.destroy(dojo.byId('legItem-' + legendItem_attr));
     			}
   			}
-  			
+
     		if (chartObj) {
     			var objIdx = dojo.indexOf(currentRoomClassification.chartObjs,chartObj);
     			if (objIdx > -1) {
 						currentRoomClassification.chartObjs.splice(objIdx, 1);
     			}
-    			
+
     			//console.log(classColors[returnVars[0].split('.',2)[1]][idArgs[returnVars[0]]].stroke);
     			//chartObj.shape.setStroke({color:classColors[returnVars[0].split('.',2)[1]][idArgs[returnVars[0]]].stroke});
     		}
-    		
+
     		//Reset attributes for features belonging to this renderer
     		dojo.forEach(roomsFeatureLayer.graphics, function(feature) {
       		if (!(dojo.some(returnVars, function(attr) {
@@ -2732,7 +2747,7 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
     		currentRoomClassification["WHERE"] = whereVars;
     	}
 		}**/
-		
+
 		if (whereVars.ORS) {
 			currentRoomClassification["RETURN"] = null;
 			currentRoomClassification["WHERE"] = null;
@@ -2740,7 +2755,7 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
 			currentRoomClassification["RETURN"] = returnVars;
     	currentRoomClassification["WHERE"] = whereVars;
 		}
-  	
+
   	//If number of legend items is zero, hide legend
   	if (dojo.query('#legend .legendItem').length == 0) {
 			dojo.byId("legend").innerHTML = '';
@@ -2940,6 +2955,26 @@ var classColors = {
 		},
 		"Not applicable":{
 			"fill":"rgba(221,221,221,.5)"
+		}
+	},
+	"Occupancy":{
+		"Fully occupied":{
+			"fill":"rgba(0,255,0,.5)"
+		},
+		"Over occupied":{
+			"fill":"rgba(150,255,50,.5)"
+		},
+		"Under occupied":{
+			"fill":"rgba(255,255,0,.5)"
+		},
+		"Vacant":{
+			"fill":"rgba(255,0,0,.5)"
+		},
+		"Capacity not set":{
+			"fill":"rgba(255, 153, 0,.5)"
+		},
+		"Not applicable":{
+			"fill":"rgba(255,255,255,0)"
 		}
 	}
 };
