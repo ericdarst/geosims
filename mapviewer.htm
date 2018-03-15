@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9"/>
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+    <title>GeoSIMS Map Viewer</title>
+    <link rel="stylesheet" type="text/css" href="https://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" type="text/css" href="https://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dojox/grid/resources/Grid.css"/>
+    <link rel="stylesheet" type="text/css" href="https://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dojox/grid/resources/tundraGrid.css"/>
+    <link rel="stylesheet" type="text/css" href="https://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/esri/dijit/css/Popup.css"/>
+    <link rel="stylesheet" type="text/css" href="https://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/esri/dijit/css/bookmarks.css"/>
+    <link rel="stylesheet" type="text/css" href="mapviewer.css"/>
+    <script type="text/javascript">djConfig = {parseOnLoad:true};</script>
+    <script type="text/javascript" src="https://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"></script>
+    <script type="text/javascript" src="common/js/dataDefinitions.js"></script>
+    <script type="text/javascript" src="common/js/common.js"></script>
+    <script type="text/javascript" src="mapviewer/js/functions.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-12932551-9']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+		</script>
+  </head>
+  <body class="tundra">
+  	<div dojoType="dijit.layout.BorderContainer" id="mainDiv" design="headline">
+  		<div dojoType="dijit.layout.BorderContainer" id="sideDiv" region="leading" splitter="true" style="width:18em;" maxSize="300">
+    		<div dojotype="dijit.layout.ContentPane" id="titlePane" region="top" splitter="false" style="height:150px;">
+    			<div id="titleContainer" style="display:none;">
+      			<a target="_blank" href="https://maps.uw.edu/geosims/geosims.html" id="maintitle">GeoSIMS</a>
+      			<span id="userwelcome"></span>
+      			<hr />
+      			<div id="ctrlDiv">
+      				<div>Facility:<input id="facSelect" style="width:16em;" /></div>
+    					<span>Floor:<input id="floorSelect" style="width:3em;" /></span>
+    					<span id="bookmarks-wrapper">
+                <div data-dojo-type="dijit.form.DropDownButton">
+                  <span>Site</span>
+                  <div data-dojo-type="dijit.TooltipDialog">
+                    <div id="bookmarks"></div>
+                  </div>
+                </div>
+              </span>
+    				</div>
+    			</div>
+    		</div>
+    		<div dojoType="dijit.layout.AccordionContainer" region="center">
+  				<div dojoType="dijit.layout.AccordionPane" title="Layers">
+  					<div id="layerList_container" style="display:none;">
+  						<div id="layerList_subcontainer">
+                <p id="bse_chk_container" class="layer_chk">
+                	<label for="bse_chk">Base</label>
+                </p>
+                <p id="rms_chk_container" class="layer_chk">
+                	<label for="rms_chk">Rooms</label><span id="classification"></span>
+                </p>
+                <p id="gsf_chk_container" class="layer_chk">
+                	<label for="gsf_chk">GSF</label>
+                </p>
+              </div>
+  					</div>
+  					<div id="classification_container" style="display:none;">
+  						<div id="classification_subcontainer">
+    						
+    					</div>
+  					</div>
+  					<div id="legend_container" style="display:none;">
+  						<div id="legend_subcontainer">
+  							<div id="legendTitle">Legend</div>
+    						<div id="legend"></div>
+    					</div>
+  					</div>
+  				</div>
+  				<div dojoType="dijit.layout.AccordionPane" title="Session History">
+  					<ul id="historyList"></ul>
+  				</div>
+    		</div>
+  		</div>
+
+  		<div id="mapDiv" dojotype="dijit.layout.ContentPane" region="center" splitter="true">
+  			<img id="loadingImg" src="mapviewer/img/loading.gif" style="position:absolute; right:50%; top:50%; z-index:100;display:none;" />
+  			<img id="northArrow" src="mapviewer/img/northArrow.png" style="display:none;" />
+				<div style="position:absolute; right:5px; top:5px; z-Index:10;display:none;">
+					<div dojoType="dijit.TitlePane" style="width:250px;" title='Measurement' closable=true open=false>
+            <div id="measurementDiv" ></div>
+            <span id="measurementDiv-snaphelp" style="font-size:smaller;padding:5px 5px;display:none;">Press <b>CTRL</b> to enable snapping.</span>
+          </div>
+				</div>
+  			<div id="messagesContainer"></div>
+  			<div id="infoSummaryContainer" style="visibility:hidden;">
+  				<span id="infoSummaryRoom"></span>
+  				<span id="infoSummaryAttr"></span>
+  			</div>
+  			<div id="infoWindowDiv" style="margin:0;display:none;">
+  				<div class="grid_container">
+  					<div class="gridTitle">Room</div>
+  					<div id="gridDiv_room" ></div>
+  				</div>
+  				<div class="grid_container">
+  					<div class="gridTitle">Room Assignments</div>
+  					<div id="gridDiv_asgnmnt" ></div>
+  				</div>
+					<div class="subgrid_container" style="clear:left;">
+						<div class="gridTitle">Occupants</div>
+    				<div id="gridDiv_rao" class="subgrid"></div>
+    			</div>
+    			<div class="subgrid_container">
+    				<div class="gridTitle">Functional Uses</div>
+  					<div id="gridDiv_rau" class="subgrid"></div>
+  				</div>
+  				<div class="subgrid_container">
+  					<div class="gridTitle">Budgets</div>
+  					<div id="gridDiv_bdgt" class="subgrid"></div>
+  				</div>
+  			</div>
+  		</div>
+
+  		<div dojoType="dijit.layout.TabContainer" region="bottom" splitter="true" minSize="55" style="background-color:#fff;height:145px;" tabPosition="left" tabStrip="false">
+  			<div id="chartPane" dojoType="dijit.layout.ContentPane" title="Summary">
+  				<div id="summaryContainer" style="display:none;">
+    				<div id="chartTitleNode"><span id="chartTitleNode-fac"></span><span id="chartTitleNode-floor"></span><span id="chartTitleNode-type"></span><span id="chartTitleNode-close" title="Close this floor">close</span></div>
+    				<div id="chartContainer">
+      				<div id="chartNode" style="width: 100%;"></div>
+      			</div>
+      		</div>
+  			</div>
+  			<!---div dojoType="dijit.layout.ContentPane" title="Search">
+  				<div id="info">&nbsp;</div>
+  			</div--->
+  		</div>
+  	</div>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9"/>
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>GeoSIMS Admin</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/tundra/tundra.css"/>
+    <style type="text/css">
+      @import "https://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/tundraGrid.css";
+      html, body { width: 100%; margin: 0; height: 100%; } .info { margin: 10px; }
+    </style>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <script type="text/javascript">
+    	var djConfig = {
+    		parseOnLoad : true,
+    		modulePaths: {
+        	"dojo": "https://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo",
+       		"dijit": "https://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit",
+          "dojox": "https://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox"
+        }
+    	};
+    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"></script>
+    <script type="text/javascript" src="../common/js/common.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+  </head>
+  <body class="tundra">
+  	<div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%" id="mainDiv" design="headline">
+  		<div dojoType="dijit.layout.TabContainer" id="TabContainer" region="center" splitter="true" tabPosition="left" tabStrip="true">
+  			<div dojoType="dijit.layout.ContentPane" id="MainPane" title="Main" selected="true" class="adminPane">
+  				<div class="adminPane-header" id="MainPane-header">
+  					<div class="adminPane-title">GeoSIMS Admin - Main</div>
+  					<div class="adminPane-desc">Summary of errors and stats in the space inventory database.</div>
+  				</div>
+  			</div>
+        <div dojoType="dijit.layout.ContentPane" id="FacilityPane" title="Facility" class="adminPane">
+  				<div class="adminPane-header" id="FacilityPane-header">
+  					<div class="adminPane-title">GeoSIMS Admin - Facility</div>
+  					<div class="adminPane-desc">Summary of facility-level errors and statuses.</div>
+  				</div>
+  			</div>
+        <div dojoType="dijit.layout.ContentPane" id="RoomPane" title="Room" class="adminPane">
+  				<div class="adminPane-header" id="RoomPane-header">
+  					<div class="adminPane-title">GeoSIMS Admin - Room</div>
+  					<div class="adminPane-desc">Summary of room-level errors.</div>
+  				</div>
+  			</div>
+        <!---div dojoType="dijit.layout.ContentPane" id="BudgetPane" title="Budget"></div--->
+  		</div>
+  	</div>
+  </body>
+</html>

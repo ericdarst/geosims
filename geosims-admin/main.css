@@ -1,0 +1,63 @@
+body {
+	min-height:480px;
+	min-width:640px;
+	overflow:hidden;
+	font-family:Verdana;
+	font-size:.8em;
+}
+
+.adminPane {
+	padding:10px !important;
+}
+
+.adminPane-header {
+	margin:5px;
+}
+
+.adminPane-title {
+	font-size:1.8em;
+}
+
+.adminPane-desc {
+	font-size:.9em;
+}
+
+.reportContainer {
+	margin:5px;
+	border:solid 1px #999;
+}
+
+.gridContainer {
+	border-top:solid 1px #999;
+  height:25em;
+}
+
+.gridTitle {
+	font-size:1.1em;
+	font-weight:bold;
+	background-color:#DDF;
+	padding:4px;
+}
+
+.gridTitle .gridCount {
+	font-size:.9em;
+}
+
+.gridTitle .gridTimestamp {
+	font-size:.8em;
+	font-weight:normal;
+	font-style: italic;
+}
+
+.queryButton {
+	font-size:.8em;
+	font-weight:normal;
+}
+
+.floatLeft {
+	float:left;
+}
+
+.alignRight {
+	text-align:right;
+}

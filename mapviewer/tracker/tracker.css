@@ -1,0 +1,33 @@
+#title {
+	font-weight:bold;
+	font-size:1.5em;
+}
+
+#intro {
+	font-size:.8em;
+}
+
+.bold {
+	font-weight:bold;
+}
+
+.sev-crit {
+	background-color:black;
+	color:white;
+	font-weight:bold;
+}
+
+.sev-high {
+	background-color:red;
+	color:white;
+}
+
+.sev-med {
+	background-color:orange;
+	color:white;
+}
+
+.sev-low {
+	background-color:yellow;
+	color:black;
+}

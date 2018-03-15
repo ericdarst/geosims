@@ -1,0 +1,8 @@
+*.config
+*~
+*.pem
+*.key
+*.crt
+login.php
+*.jar
+
