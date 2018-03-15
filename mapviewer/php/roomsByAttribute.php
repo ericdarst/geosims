@@ -17,17 +17,17 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     					$tableArr[] = $tblKey;
     				}
     			}
-					
+
     			if (strlen($selectStr) > 0) { //Add comma delimiter
     				$selectStr .= ', ';
     			}
     			$selectStr .= $validSelectKeys[$key][1];
-					
+
 					if (!is_null($validSelectKeys[$key][2]) && strlen($orderStr) > 0) { //Add comma delimiter
     				$orderStr .= ', ';
     			}
 					$orderStr .= $validSelectKeys[$key][2];
-					
+
     			unset($validSelectKeys[$key]);
     		} else {
     			//echo 'Invalid column name: '.$key;
@@ -98,7 +98,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
       		}
       	}
     	}
-    	
+
     	$tblStr = '';
     	foreach ($tableArr as $tblKey) {
     		if (array_key_exists($tblKey,$validTblKeys)) {
@@ -108,21 +108,22 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
         	return '';
         }
     	}
-    	
+
     	return array(array($selectStr,$whereStr, $tblStr, $orderStr), $returnArr);
     }
-    
+
   	//Define return array
   	$arr = array(
   		'request' => json_decode($_POST["json"], true)); //Populate request array
   	//$arr['request']['FACNUM'] = '1008';
   	//$arr['request']['FLOOR'] = '02';
-  	
+
   	$validTblVars = array('R' => array($tableRoom.' R',''),
+													'RV' => array($tableRoomView.' RV','LEFT JOIN '.$tableRoomView.' RV ON R.FACROOM = RV.FACROOM '),
   												'RT' => array($tableRoomType.' RT','LEFT JOIN '.$tableRoomType.' RT ON R.ROOM_TYPE = RT.ROOM_TYPE '),
   												'O' => array($tableOrg.' O','LEFT JOIN '.$tableOrg.' O ON R.ORGANIZATION = O.OrgCode '),
   												'OD' => array($tableOrgDept.' OD','LEFT JOIN '.$tableOrgDept.' OD ON SUBSTRING(R.ORGANIZATION,1,7) = OD.ORG_DEPT '));
-  												
+
   	$selectVars = $arr['request']['RETURN'];
   	//Add key columns
   	//$selectVars[] = 'R.ROOM_NUMBER';
@@ -132,6 +133,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
   													 'R.ORG7' => array(array('R'),'SUBSTRING(R.ORGANIZATION,1,7) AS ORG7',null),
   													 'R.ROOM_TYPE' => array(array('R'),'R.ROOM_TYPE',null),
   													 'R.CONFIRM_DATE' => array(array('R'),"ISNULL(DATEDIFF(DAY,R.CONFIRM_DATE,SYSDATETIME())+1,-1) * ABS(CHARINDEX('NONASGN', R.ORGANIZATION)-1) AS CONFIRM_DATE",'R.CONFIRM_DATE'),
+														 'RV.Occupancy' => array(array('RV'),"CASE WHEN R.ORGANIZATION IN ('NONASGN','NOTUW') THEN NULL WHEN RV.OccupantCount IS NULL AND R.ROOM_TYPE NOT IN ('250','260','261','262','263','264','311','312','313','314','316','317','319') THEN NULL WHEN isnull(RV.Capacity,0) = 0 AND isnull(RV.OccupantCount,0) > 0 THEN -1 WHEN RV.OccupantCount IS NULL OR isnull(RV.Capacity,0) = 0 THEN 0 ELSE cast(RV.OccupantCount as float) / cast(RV.Capacity as float) END as Occupancy","CASE WHEN R.ORGANIZATION IN ('NONASGN','NOTUW') THEN NULL WHEN RV.OccupantCount IS NULL AND R.ROOM_TYPE NOT IN ('250','260','261','262','263','264','311','312','313','314','316','317','319') THEN NULL WHEN isnull(RV.Capacity,0) = 0 AND isnull(RV.OccupantCount,0) > 0 THEN -1 WHEN RV.OccupantCount IS NULL OR isnull(RV.Capacity,0) = 0 THEN 0 ELSE cast(RV.OccupantCount as float) / cast(RV.Capacity as float) END DESC"),
   													 'RT.PRIMARY_USE' => array(array('RT'),'RT.PRIMARY_USE',"iif(left(R.ROOM_TYPE,1) = '0','X' + R.ROOM_TYPE, R.ROOM_TYPE)"),
   													 'RT.SPACE_CATEGORY' => array(array('RT'),'RT.SPACE_CATEGORY','RT.SPACE_CATEGORY'),
   													 'O.ORG_NAME' => array(array('O','R'),'O.OrgName as ORG_NAME, R.ORGANIZATION as ALT_DESC','R.ORGANIZATION'),
@@ -145,9 +147,9 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
   													'R.ROOM_TYPE' => array('R.ROOM_TYPE',':rrmt_bv',null,3,'SQLT_CHR'),
   													'RA.ASSIGNEE_ORGANIZATION' => array('RA.ASSIGNEE_ORGANIZATION',':raorg_bv',null,10,'SQLT_CHR'),
   													'RT.SPACE_CATEGORY' => array('RT.SPACE_CATEGORY',':rtsc_bv',null,20,'SQLT_CHR'));
-  	
+
   	$conn = createConn($db_username,$db_password,$db_server,$db_database);  //Connection property variables defined in login.php
-  	
+
   	if (array_key_exists('FACNUM', $whereVars['ANDS'])) {
   		$whereVars['ANDS']['R.FACILITY_CODE'] = getFacilityCode($conn, $whereVars['ANDS']['FACNUM']);
   		unset($whereVars['ANDS']['FACNUM']);
@@ -193,4 +195,3 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
   	echo json_encode($arr['results']);
   }
 }
-
