@@ -2621,9 +2621,7 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
     				}
 						//Transform occupancy value
 						if (columnName == 'Occupancy') {
-							console.log(Number(value));
     					(!value ? value = "Not applicable" : (Number(value) == -1 ? value = "Capacity not set" : (Number(value) == 0 ? value = "Vacant" : (Number(value) < 1 ? value = "Under occupied" : (Number(value) == 1 ? value = "Fully occupied" : value = "Over occupied")))));
-							console.log(value);
     				}
 
     				feature.attributes[attr] = value; //Assign returned value to attribute
