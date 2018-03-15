@@ -266,6 +266,7 @@ function dojoOnLoad() {
   	getRoomAttribute([newVal],{"ANDS":{"FACNUM":facNum,"R.FLOOR_CODE":floor}},null);
 	}
   var classMenu = new dijit.Menu({
+		id: "classifyMenu",
 		style: "display: none;"
   });
 	var menuItem1 = new dijit.MenuItem({
@@ -294,6 +295,7 @@ function dojoOnLoad() {
 	});
 	var menuItem7 = new dijit.MenuItem({
 		label: "Subdivision",
+		id: "classifyMenuItem-O.ORG_NAME",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('O.ORG_NAME');
@@ -302,6 +304,7 @@ function dojoOnLoad() {
 	});
 	var menuItem2 = new dijit.MenuItem({
 		label: "Department",
+		id: "classifyMenuItem-OD.ORG_DEPT_NAME",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('OD.ORG_DEPT_NAME');
@@ -310,6 +313,7 @@ function dojoOnLoad() {
 	});
 	var menuItem3 = new dijit.MenuItem({
 		label: "College",
+		id: "classifyMenuItem-OD.ORG_COLLEGE_NAME",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('OD.ORG_COLLEGE_NAME');
@@ -317,6 +321,7 @@ function dojoOnLoad() {
 	});
 	var menuItem4 = new dijit.MenuItem({
 		label: "Primary Use",
+		id: "classifyMenuItem-RT.PRIMARY_USE",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('RT.PRIMARY_USE');
@@ -324,6 +329,7 @@ function dojoOnLoad() {
 	});
 	var menuItem5 = new dijit.MenuItem({
 		label: "Space Category",
+		id: "classifyMenuItem-RT.SPACE_CATEGORY",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('RT.SPACE_CATEGORY');
@@ -331,6 +337,7 @@ function dojoOnLoad() {
 	});
 	var menuItem6 = new dijit.MenuItem({
 		label: "Occupancy",
+		id: "classifyMenuItem-RV.Occupancy",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('RV.Occupancy');
@@ -338,6 +345,7 @@ function dojoOnLoad() {
 	});
 	var menuItem7 = new dijit.MenuItem({
 		label: "Last Confirmed",
+		id: "classifyMenuItem-R.CONFIRM_DATE",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
 		onClick: function() {
 			classSelOnChange('R.CONFIRM_DATE');
@@ -2568,11 +2576,10 @@ function getRoomAttribute(returnVars, whereVars, chartObj) {
 		roomsFeaturesClassRenderer = new esri.renderer.UniqueValueRenderer((whereVars.ORS ? symbol : errorSymbol), returnVars[0], returnVars[1] ? returnVars[1] : null, returnVars[2] ? returnVars[2] : null, ":"); //Initialize once?
 		roomsFeatureLayer.setRenderer(roomsFeaturesClassRenderer);
 		dojo.byId("legend").innerHTML = '';
+
 		//Set legend title
-		/**var legendAttr = dojo.create("div", {
-			innerHTML: roomsFeatureLayer.renderer.attributeField,
-			"class": "legendAttribute"
-		},"legend");**/
+		dojo.byId("legendTitle").innerHTML = dijit.byId("classifyMenuItem-" + roomsFeatureLayer.renderer.attributeField).label;
+
 		dojo.style("legend_container","display","inline");
 		if (currentRoomClassification.chartObjs.length > 0) { //Reset stroke of active bar chart items
 			dojo.forEach(currentRoomClassification.chartObjs, function(obj) {
