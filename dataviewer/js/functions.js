@@ -33,9 +33,9 @@ var authz, netid;
 function init() {
 	setCustomClasses(); //Set customized dojo classes
 	getAuthz(makeAuthzButton("userwelcome"), false); //Get ASTRA authorizations and set authz button and dialog content
-	
+
 	store_empty = new dojo.data.ItemFileWriteStore({data:{items:[]}});
-	
+
 	helpTooltip = new CustomDynamicTooltip({
     connectId: [],
     label: "",
@@ -113,7 +113,7 @@ function makeQuery(pane) {
 		}
 		setDirtyQuery(pane, false);
 		pane.set("title",pane.vars.queryType + " Query (" + data.length + ")");
-		
+
 		if (queryParams.from == 'R') {
 			var grid = pane.grids.grid_R;
 			//Set gridRA container size if previous query was a Room Assignment Records query
@@ -240,8 +240,8 @@ function organizeQueryConditions(whereGroup, fieldIndexes, organizedWhereGroup) 
 				} else {
 					organizedWhereGroup[fieldIndex].item.push(whereItem);
 				}
-				
-			} else { 
+
+			} else {
 				var fieldIndex = fieldIndexes.length;
 				fieldIndexes.push(item.field);
 				if (fieldIndex > 0) whereItem.operator = 'AND';
@@ -260,9 +260,9 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
 	//console.log('EDIT CONDITION', conditionContainer, condition);
 	dojo.style(pane.vars.queryBoxAdd,"display","none");
 	dojo.empty(conditionContainer);
-	
+
 	var formContainer = conditionContainer;
-	
+
 	pane.vars.queryBoxForm = new dijit.form.Form({
 		"class":"queryItem queryCondition newCondition",
 		onSubmit:function() {
@@ -297,14 +297,14 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
           		pane.vars.fields[condition.field].valueLabels = {};
           	}
           	pane.vars.fields[condition.field].valueLabels[condition.value] = valueSelect.displayedValue; //Add displayed value
-          	
+
           	//Properly group condition with other conditions with equal fields
           	var organizedQuery = organizeQueryConditions(pane.vars.query.where, [], []);
           	//console.log(organizedQuery);/
           	pane.vars.query.where = organizedQuery[1];
       			setDirtyQuery(pane, true);
       		}
-      		
+
   				dojo.empty(pane.vars.queryBoxConditions);
   				populateWhereItems(pane, pane.vars.queryBoxConditions, pane.vars.query.where);
   				dojo.style(pane.vars.queryBoxAdd,"display","");
@@ -317,9 +317,9 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
 			}
 			return false;
 		}
-	
+
 	},formContainer);
-	
+
 	var fieldOptions = getSelectOptions(pane.vars.fields, condition.field);
 	//console.log(fieldOptions);
 	var fieldSelect = new dijit.form.Select({
@@ -335,10 +335,10 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
 			} else {
 				dojo.empty(predicateSelectContainer);
 			}
-    	
+
     	if (pane.vars.fields[val].formElement) { //The new field has a form element defined
     		if (valueSelect === pane.vars.fields[val].formElement) { //The current value select form element equals the new field's form element
-    			if (valueSelect.store && valueSelect.store !== pane.vars.fields[val].valueStore) { 
+    			if (valueSelect.store && valueSelect.store !== pane.vars.fields[val].valueStore) {
     				valueSelect.set('value', null);
     				valueSelect.set('store',pane.vars.fields[val].valueStore);
     			}
@@ -366,7 +366,7 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
     }
   }).placeAt(pane.vars.queryBoxForm.containerNode);
   fieldSelect.focus();
-  
+
   var predicateSelectContainer = dojo.create("span",{},pane.vars.queryBoxForm.containerNode);
   var predicateOptions = getSelectOptions(pane.vars.fields[fieldSelect.get('value')].predicateOptions, condition.predicate);
   var predicateSelect = new dijit.form.Select({
@@ -375,7 +375,7 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
     options: predicateOptions
   });
   if (pane.vars.fields[fieldSelect.value].predicateOptions != 'none') predicateSelect.placeAt(predicateSelectContainer);
-  
+
   var valueSelectContainer = dojo.create("span",{},pane.vars.queryBoxForm.containerNode);
   if (condition.formElement) {
   	var valueSelect = condition.formElement;
@@ -402,7 +402,7 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
   	"class":"queryButton",
   	type: "submit"
   }).placeAt(pane.vars.queryBoxForm.containerNode);
-  
+
   var cancelEditButton = new dijit.form.Button({
   	label: "Cancel",
   	"class":"queryButton",
@@ -412,7 +412,7 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
 			dojo.style(pane.vars.queryBoxAdd,"display","");
   	}
   }).placeAt(pane.vars.queryBoxForm.containerNode);
-	
+
 	var deleteFilterButton = new dijit.form.Button({
   	label: "Delete",
   	"class":"queryButton",
@@ -424,11 +424,11 @@ function editQueryCondition(pane, conditionContainer, condition, conditionDelete
 
 function removeQueryCondition(pane, groupParent, conditionGroup, conditionIndex) {
 	//console.log('REMOVE CONDITION', groupParent, conditionGroup, conditionIndex);
-	
+
 	if (groupParent || conditionGroup || conditionIndex) {
   	//Remove element at given index from condition array
   	var removedCondition = conditionGroup.splice(conditionIndex,1);
-  	
+
   	if (conditionIndex === 0 && conditionGroup.length > 0) {
   		delete conditionGroup[0].operator;
   	}
@@ -447,7 +447,7 @@ function removeQueryCondition(pane, groupParent, conditionGroup, conditionIndex)
 	dojo.empty(pane.vars.queryBoxConditions);
 	populateWhereItems(pane, pane.vars.queryBoxConditions, pane.vars.query.where);
 	dojo.style(pane.vars.queryBoxAdd,"display","");
-	
+
 	//if (removedCondition.length == 0 && pane.vars.query.where.length == 0) addQueryCondition(pane);
 	return;// removedCondition;
 }
@@ -455,7 +455,7 @@ function removeQueryCondition(pane, groupParent, conditionGroup, conditionIndex)
 //Create HTML for adding a new query condition
 function addQueryCondition(pane) {
 	//dojo.style(pane.vars.queryBoxAdd,"display","none");
-	
+
 	var conditionContainer = pane.vars.queryBoxConditions;
 	var conditionItem = {
 		'item': [
@@ -466,7 +466,7 @@ function addQueryCondition(pane) {
 	};
 	var conditionDelete = dojo.create("span",{"class":"deleteItem",innerHTML:'X', onclick:function(evt) {dojo.stopEvent(evt);removeQueryCondition(pane, pane.vars.query.where, pane.vars.query.where, pane.vars.query.where.length + 1);}});
 	var condition = dojo.create("div",{"class":"queryItem queryCondition"}, conditionContainer);
-	
+
 	editQueryCondition(pane, condition, conditionItem.item[0], conditionDelete);
 }
 
@@ -479,7 +479,7 @@ function populateQueryBox(pane, query) {
 
 	var queryBox = pane.vars.queryBox;
 	dojo.empty(queryBox); //Remove children
-	
+
 	if (pane.vars.queryType == "Space") {
   	//Make query source select
   	var sourceSelect = new dijit.form.Select({
@@ -503,22 +503,22 @@ function populateQueryBox(pane, query) {
       }
     }).placeAt(queryBox);
   }
-	
+
 	pane.vars.queryBoxConditions = dojo.create("div",{"class":"queryConditions"},queryBox);
 	populateWhereItems(pane, pane.vars.queryBoxConditions, pane.vars.query.where);
-	
+
 	pane.vars.queryBoxAdd = dojo.create("div",{"class":"queryItem queryAdd",innerHTML:'add new search condition',onclick:function() {addQueryCondition(pane)}},queryBox);
 	if (query.where.length == 0) {
 		addQueryCondition(pane);
 	}
-	
+
 	return true;
 }
 
 function makeAddQueryTab(tabs) {
 	var pane = new dijit.layout.ContentPane({ title:"+", tooltip:"Add a new query", closable: false, disabled:true});
 	tabs.addChild(pane);
-	
+
 	dojo.connect(tabs.tablist,"onButtonClick",function(page) {
 		if (page === pane) {
 			newQueryTab(tabs);
@@ -530,7 +530,7 @@ function makeFrontTab(tabs) {
 	//console.log('new tab', tabs);
 	//Make DOM structure
 	var bc = new dijit.layout.BorderContainer({});
-	
+
 	var qTab_resultBC = new dijit.layout.BorderContainer({region:'center',design:'sidebar'});
 	var qTab_resultBC_R = new dijit.layout.BorderContainer({region:'center',gutters:true});
 	var qTab_resultBC_R_cont = new dijit.layout.ContentPane({region:'center',content:"This is the GeoSIMS Data Viewer."});
@@ -541,7 +541,7 @@ function makeFrontTab(tabs) {
 	qTab_resultBC.addChild(qTab_resultBC_R);
 	qTab_resultBC.addChild(qTab_resultBC_RAchild);
 	bc.addChild(qTab_resultBC);
-	
+
 	var pane = new dijit.layout.ContentPane({ title:"Welcome", closable: false, content: bc });
 	tabs.addChild(pane);
 }
@@ -556,25 +556,25 @@ function newQueryTab_space(pane) {
 	}
 	//Make DOM structure
 	var bc = new dijit.layout.BorderContainer({});
-	
+
 	var qTab_queryCP = new dijit.layout.ContentPane({region:'top',style:'height:100px;overflow:auto;',"class":"queryTab_query"});
 	var qTab_queryBox = dojo.create("div",{"class":"queryBox"},qTab_queryCP.domNode);
 	var qTab_queryEdit = dojo.create("div",{"class":"queryEdit"},qTab_queryCP.domNode);
-  
+
 	var submitQueryButton = new dijit.form.Button({
   	label: "Submit Query",
   	onClick: function() {
   		makeQuery(pane);
   	}
   },dojo.create("div",{"class":"queryButton"},qTab_queryEdit));
-  
+
 	bc.addChild(qTab_queryCP);
 
 	var qTab_resultBC = new dijit.layout.BorderContainer({region:'center',design:'sidebar'});
-	
+
 	var qTab_resultBC_R = new dijit.layout.BorderContainer({region:'center',gutters:false});
 	qTab_resultBC_R_title = new dijit.layout.ContentPane({region:'top',style:'height:1.6em;',"class":"gridTitle",content:"Room"});
-	
+
 	var qTab_resultBC_R_grid = new dijit.layout.ContentPane({region:'center'});
 	qTab_resultBC_R.addChild(qTab_resultBC_R_title);
 	qTab_resultBC_R.addChild(qTab_resultBC_R_grid);
@@ -586,37 +586,37 @@ function newQueryTab_space(pane) {
 	qTab_resultBC_RA.addChild(qTab_resultBC_RA_title);
 	qTab_resultBC_RA.addChild(qTab_resultBC_RA_grid);
 	qTab_resultBC.addChild(qTab_resultBC_RA);
-	
+
 	var qTab_resultBC_RAchild = new dijit.layout.BorderContainer({region:'right',style:'width:25%;',splitter:true});
-	
+
 	var qTab_resultBC_RAchild_RAB = new dijit.layout.BorderContainer({region:'top',style:'height:33%;',splitter:true,gutters:false});
 	var qTab_resultBC_RAchild_RAB_title = new dijit.layout.ContentPane({region:'top',style:'height:1.6em;',"class":"gridTitle",content:"Budgets"});
 	var qTab_resultBC_RAchild_RAB_grid = new dijit.layout.ContentPane({region:'center'});
 	qTab_resultBC_RAchild_RAB.addChild(qTab_resultBC_RAchild_RAB_title);
 	qTab_resultBC_RAchild_RAB.addChild(qTab_resultBC_RAchild_RAB_grid);
 	qTab_resultBC_RAchild.addChild(qTab_resultBC_RAchild_RAB);
-	
+
 	var qTab_resultBC_RAchild_RAO = new dijit.layout.BorderContainer({region:'center',style:'height:33%;',gutters:false});
 	var qTab_resultBC_RAchild_RAO_title = new dijit.layout.ContentPane({region:'top',style:'height:1.6em;',"class":"gridTitle",content:"Occupants"});
 	var qTab_resultBC_RAchild_RAO_grid = new dijit.layout.ContentPane({region:'center'});
 	qTab_resultBC_RAchild_RAO.addChild(qTab_resultBC_RAchild_RAO_title);
 	qTab_resultBC_RAchild_RAO.addChild(qTab_resultBC_RAchild_RAO_grid);
 	qTab_resultBC_RAchild.addChild(qTab_resultBC_RAchild_RAO);
-	
+
 	var qTab_resultBC_RAchild_RAU = new dijit.layout.BorderContainer({region:'bottom',style:'height:33%;',splitter:true,gutters:false});
 	var qTab_resultBC_RAchild_RAU_title = new dijit.layout.ContentPane({region:'top',style:'height:1.6em;',"class":"gridTitle",content:"Functional Uses"});
 	var qTab_resultBC_RAchild_RAU_grid = new dijit.layout.ContentPane({region:'center'});
 	qTab_resultBC_RAchild_RAU.addChild(qTab_resultBC_RAchild_RAU_title);
 	qTab_resultBC_RAchild_RAU.addChild(qTab_resultBC_RAchild_RAU_grid);
 	qTab_resultBC_RAchild.addChild(qTab_resultBC_RAchild_RAU);
-	
+
 	qTab_resultBC.addChild(qTab_resultBC_RAchild);
 
 	bc.addChild(qTab_resultBC);
-	
+
 	pane.set("title","Space Query (0)");
 	pane.set("content",bc);
-	
+
 	pane.vars = {};
 	pane.vars.queryType = "Space";
 	pane.vars.queryStores = {};
@@ -941,7 +941,7 @@ function newQueryTab_space(pane) {
     	}
 		}
 	};
-	
+
 	//Add 'Edit Selected' button to table title
 	function makeEditDialogContent(pane) {
 		//Dialog container and row authzd and row selection totals
@@ -949,12 +949,12 @@ function newQueryTab_space(pane) {
 
 		//Container for edit selected records value form
   	var editSelected = dojo.create("div",{"class":"editFieldContainer",innerHTML:"<div>Edit field value for selected records</div>"},editDialogContent_R);
-  	
+
   	//Edit selected records value form
   	var editForm = new dijit.form.Form({
   		"class":"editFieldContainer",
   		onSubmit:function() {
-  		
+
   			var grid = pane.grids.grid_R;
     		var recordID = [];
     		var gridSelection = grid.selection.getSelected();
@@ -971,7 +971,7 @@ function newQueryTab_space(pane) {
   					authzdItems.push(selItem);  //Save items the user is authorized to update
   				}
   			});
-  			
+
   			if (recordID.length > 0) {
   				var updateColumn = fieldSelect.value;
   				var updateValue = valueSelect.value;
@@ -979,11 +979,11 @@ function newQueryTab_space(pane) {
           	records : recordID,
           	values : {}
           };
-          
+
           update.values[updateColumn] = updateValue;
-  				
+
   				editSelected_status.innerHTML = 'Updating..';
-  				
+
   				var onUpdateSelected = submitQuery(dojo.toJson(update),"common/php/updateColumnForSelectedRows.php");
     			onUpdateSelected.addCallback(function(data) {
     				dojo.disconnect(grid.store.onSetListener);
@@ -998,20 +998,20 @@ function newQueryTab_space(pane) {
       			});
     				grid.store.save();
     				grid.store.onSetListener = dojo.connect(grid.store, "onSet", grid.evt.onSetFunction);
-    				
+
     				editSelected_status.innerHTML = data.rowsUpdated + ' record' + (data.rowsUpdated === 1 ? '' : 's') + ' updated.';
-    				
+
     				postClientMessage({
         			text:"Updated.",
         			type:"success"
         		});
     			});
-    			
+
     		}
     		return false;
   		}
   	},editSelected);
-  	
+
   	//Field selection
   	var fieldSelect = new dijit.form.Select({
       name: 'editField',
@@ -1030,10 +1030,10 @@ function newQueryTab_space(pane) {
       }],
       onChange: function(val) {
       	//console.log(val);
-      	
+
       	if (pane.vars.fields[val].formElement) { //The new field has a form element defined
       		if (valueSelect === pane.vars.fields[val].formElement) { //The current value select form element equals the new field's form element
-      			if (valueSelect.store && valueSelect.store !== pane.vars.fields[val].valueStore) { 
+      			if (valueSelect.store && valueSelect.store !== pane.vars.fields[val].valueStore) {
       				valueSelect.set('value', null);
       				valueSelect.set('store',pane.vars.fields[val].valueStore);
       			}
@@ -1058,10 +1058,10 @@ function newQueryTab_space(pane) {
             "class": 'queryInput valueSelect'
           }).placeAt(valueSelectContainer);
       	}
-      	
+
       }
     }).placeAt(editForm.containerNode);
-    
+
     //Value entry box
     var valueSelectContainer = dojo.create("span",{},editForm.containerNode);
     if (pane.vars.fields[fieldSelect.value].formElement) {
@@ -1080,16 +1080,16 @@ function newQueryTab_space(pane) {
         //value: condition.value
     	}).placeAt(valueSelectContainer);
     }
-    
+
     //Update field submit button
     var submitEditButton = new dijit.form.Button({
     	label: "Update Field",
     	"class":"editSelected-button",
     	type: "submit"
     }).placeAt(editForm.containerNode);
-    
+
     var editSelected_status = dojo.create("div",{"class":"editSelected-status"},editForm.containerNode);
-  	
+
   	//Confirm selected button
   	var confirmSelected = new dijit.form.Button({
     	label: "Confirm Selected Rooms As Correct",
@@ -1111,7 +1111,7 @@ function newQueryTab_space(pane) {
   					authzdItems.push(selItem);  //Save item to update confirm_date, confirm_user on success
   				}
   			});
-  			
+
   			if (recordID.length > 0) {
     			var onCurrentDeferred = submitQuery(dojo.toJson(recordID),"common/php/updateroomconfirm.php");
     			onCurrentDeferred.addCallback(function(data) {
@@ -1130,9 +1130,9 @@ function newQueryTab_space(pane) {
     		}
     	}
     }).placeAt(editDialogContent_R);
-    
+
     var editSelected = dojo.create("div",{"class":"editSelected-instructions",innerHTML:"Selection controls:<ul><li>Ctrl-Click: Add or remove a record from the current selection.</li><li>Shift-Click: Select a range of rows in the table.</li><li>Ctrl-Shift-Click: Add a range of rows to the current selection</li></ul>"},editDialogContent_R);
-    
+
     return editDialogContent_R;
   }
 	var qTab_resultBC_R_title_editContent = makeEditDialogContent(pane)
@@ -1173,13 +1173,13 @@ function newQueryTab_space(pane) {
     			}
   			})
   		}
-  		
+
   		this["data-geosims-editSelectedDialog"].show();
   	}
   }).placeAt(qTab_resultBC_R_title.containerNode);
-  
+
   pane.vars.grid_R_titleRowSummaryContainer = dojo.create("span",{"class":"gridTitleRowSummary"},qTab_resultBC_R_title.containerNode);
-	
+
 	pane.vars.queryBox = qTab_queryBox;
 	pane.vars.submitQueryButton = submitQueryButton;
 	pane.vars.layoutContainer_grids = qTab_resultBC;
@@ -1199,7 +1199,7 @@ function newQueryTab_space(pane) {
 	qTab_resultBC_R_grid.domNode.appendChild(pane.grids.grid_R.domNode);
 	pane.grids.grid_R.startup();
 	pane.grids.grid_R.evt = {}; //Object to hold dojo.connect handlers
-	
+
 	pane.grids.grid_RA = new dojox.grid.DataGrid({
 		store: store_empty,
 		structure: getGridLayout_RA(pane),
@@ -1218,7 +1218,7 @@ function newQueryTab_space(pane) {
 	qTab_resultBC_RA_grid.domNode.appendChild(pane.grids.grid_RA.domNode);
 	pane.grids.grid_RA.startup();
 	pane.grids.grid_RA.evt = {}; //Object to hold dojo.connect handlers
-	
+
 	pane.grids.grid_RAB = new dojox.grid.DataGrid({
 		store: store_empty,
 		structure: getGridLayout_RAB(pane),
@@ -1237,7 +1237,7 @@ function newQueryTab_space(pane) {
 	qTab_resultBC_RAchild_RAB_grid.domNode.appendChild(pane.grids.grid_RAB.domNode);
 	pane.grids.grid_RAB.startup();
 	pane.grids.grid_RAB.evt = {}; //Object to hold dojo.connect handlers
-	
+
 	pane.grids.grid_RAO = new dojox.grid.DataGrid({
 		store: store_empty,
 		structure: getGridLayout_RAO(pane),
@@ -1251,7 +1251,7 @@ function newQueryTab_space(pane) {
 	qTab_resultBC_RAchild_RAO_grid.domNode.appendChild(pane.grids.grid_RAO.domNode);
 	pane.grids.grid_RAO.startup();
 	pane.grids.grid_RAO.evt = {}; //Object to hold dojo.connect handlers
-	
+
 	pane.grids.grid_RAU = new dojox.grid.DataGrid({
 		store: store_empty,
 		structure: getGridLayout_RAU(pane),
@@ -1265,7 +1265,7 @@ function newQueryTab_space(pane) {
 	qTab_resultBC_RAchild_RAU_grid.domNode.appendChild(pane.grids.grid_RAU.domNode);
 	pane.grids.grid_RAU.startup();
 	pane.grids.grid_RAU.evt = {}; //Object to hold dojo.connect handlers
-	
+
 	pane.grids.grid_R.evt.onSetFunction = onSetFunction;
 	pane.grids.grid_RA.evt.onSetFunction = onSetFunction;
 	pane.grids.grid_RAB.evt.onSetFunction = onSetFunction;
@@ -1276,10 +1276,10 @@ function newQueryTab_space(pane) {
 	pane.grids.grid_RAB.evt.onDeleteFunction = onDeleteFunction;
 	pane.grids.grid_RAO.evt.onDeleteFunction = onDeleteFunction;
 	pane.grids.grid_RAU.evt.onDeleteFunction = onDeleteFunction;
-	
+
 	pane.grids.grid_R.evt.onSelectedFunction = grid_R_onSelectionChanged;
 	pane.grids.grid_RA.evt.onSelectedFunction = grid_RA_onSelectionChanged;
-	
+
 	pane.grids.grid_R.evt.onSelected = dojo.connect(pane.grids.grid_R,"onSelectionChanged",function() {grid_R_onSelectionChanged(pane);});
 	pane.grids.grid_RA.evt.onSelected = dojo.connect(pane.grids.grid_RA,"onSelectionChanged",function() {grid_RA_onSelectionChanged(pane);});
 }
@@ -1292,22 +1292,22 @@ function newQueryTab_budget(pane) {
 	}
 	//Make DOM structure
 	var bc = new dijit.layout.BorderContainer({});
-	
+
 	var qTab_queryCP = new dijit.layout.ContentPane({region:'top',style:'height:100px;overflow:auto;',"class":"queryTab_query"});
 	var qTab_queryBox = dojo.create("div",{"class":"queryBox"},qTab_queryCP.domNode);
 	var qTab_queryEdit = dojo.create("div",{"class":"queryEdit"},qTab_queryCP.domNode);
-  
+
 	var submitQueryButton = new dijit.form.Button({
   	label: "Submit Query",
   	onClick: function() {
   		makeQuery(pane);
   	}
   },dojo.create("div",{"class":"queryButton"},qTab_queryEdit));
-  
+
 	bc.addChild(qTab_queryCP);
 
 	var qTab_resultBC = new dijit.layout.BorderContainer({region:'center',design:'sidebar'});
-	
+
 	var qTab_resultBC_B = new dijit.layout.BorderContainer({region:'center',gutters:false});
 	qTab_resultBC_B_title = new dijit.layout.ContentPane({region:'top',style:'height:1.6em;',"class":"gridTitle",content:"Budgets"});
 	var qTab_resultBC_B_grid = new dijit.layout.ContentPane({region:'center'});
@@ -1321,12 +1321,12 @@ function newQueryTab_budget(pane) {
 	qTab_resultBC_BRA.addChild(qTab_resultBC_BRA_title);
 	qTab_resultBC_BRA.addChild(qTab_resultBC_BRA_grid);
 	qTab_resultBC.addChild(qTab_resultBC_BRA);
-	
+
 	bc.addChild(qTab_resultBC);
-	
+
 	pane.set("title","Budget Query (0)");
 	pane.set("content",bc);
-	
+
 	pane.vars = {};
 	pane.vars.queryType = "Budget";
 	pane.vars.queryStores = {};
@@ -1554,7 +1554,7 @@ function newQueryTab_budget(pane) {
 			predicateOptions:'none'
 		}
 	};
-	
+
 	pane.vars.queryBox = qTab_queryBox;
 	pane.vars.submitQueryButton = submitQueryButton;
 	pane.vars.layoutContainer_grids = qTab_resultBC;
@@ -1562,7 +1562,7 @@ function newQueryTab_budget(pane) {
 	populateQueryBox(pane, {from:'B',where:[]});
 	pane.vars.previousFrom = 'B'; //Grid layout is set initially as a Room Records query
 	pane.grids = {};
-	
+
 	pane.grids.grid_B = new dojox.grid.DataGrid({
 		store: store_empty,
 		structure: getGridLayout_B(pane),
@@ -1573,7 +1573,7 @@ function newQueryTab_budget(pane) {
 	qTab_resultBC_B_grid.domNode.appendChild(pane.grids.grid_B.domNode);
 	pane.grids.grid_B.startup();
 	pane.grids.grid_B.evt = {}; //Object to hold dojo.connect handlers
-	
+
 	pane.grids.grid_BRA = new dojox.grid.DataGrid({
 		store: store_empty,
 		structure: getGridLayout_BRA(pane),
@@ -1608,21 +1608,21 @@ function newQueryTab_budget(pane) {
 		//}
 		return isAuthd;
 	};
-	
 
-	
+
+
 	//onStartEdit function for grid_BRA
 	pane.grids.grid_BRA.onStartEdit = function(inCell, inRowIndex) {
 		//console.log('editing cell',inCell,inRowIndex);
-		
+
 		if (helpTooltip) helpTooltip.close();
 		if (inCell.declaredClass == "dojox.grid.cells._Widget" && inCell.widgetProps.store) {
 			if (inCell.widget) {
   			//console.log(inCell.widget.id);
-  			
+
   			//Set value to null
   			inCell.widget.set({'displayedValue':null});
-  			
+
   			//Reset onchange functionality
   			inCell.widget.onChange = pane.vars.funcs.BRA_RA_onChange;
 			}
@@ -1649,9 +1649,9 @@ function newQueryTab(tabs) {
 	//console.log('new tab', tabs);
 	//Make DOM structure
 	var pane = new dijit.layout.ContentPane({ title:"New Query", closable: true});
-	
+
 	var bc = new dijit.layout.BorderContainer({});
-	
+
 	var cp = new dijit.layout.ContentPane({region:'center',"class":"queryTab_newQuery"});
 	var buttonContainer = dojo.create("div",{"class":"buttonContainer","style":"width:600px;border:solid 1px #AAA;background-color:#EEE;margin-left:auto;margin-right:auto;"},cp.containerNode);
 	var newQueryContainer_title = dojo.create("div",{"style":"margin:3px;margin-bottom:0;padding:3px;border:solid 1px #CCC;background-color:#FFF;font-size:1.5em;font-style:italic;font-weight:100;text-align:center;","innerHTML":"Select a query type"},buttonContainer);
@@ -1677,11 +1677,11 @@ function newQueryTab(tabs) {
   }).placeAt(dojo.create("div",{"style":"padding:10px;text-align:center;"},newQueryContainer_budgetContainer,"first"));
   var buttonSubcontainer2 = dojo.create("div",{"class":"buttonContainer","style":"clear:left;","innerHTML":""},buttonContainer);
 	bc.addChild(cp);
-	
+
 	pane.set("content",bc);
 	tabs.addChild(pane,tabs.getChildren().length-1);
 	tabs.selectChild(pane);
-	
+
 }
 
 function grid_B_onSelectionChanged(pane) {
@@ -1699,7 +1699,7 @@ function grid_B_onSelectionChanged(pane) {
 			var selItem = selected[0];
 			var bgtNum = grid.store.getValue(selItem, "BUDGET_NUMBER");
 			var bgtFY = grid.store.getValue(selItem, "BienniumYear");
-			
+
 			var getBRA_deferred = submitQuery(dojo.toJson({"BUDGET_NUMBER":bgtNum,"BienniumYear":bgtFY}),"dataviewer/php/getBRA.php");
   		getBRA_deferred.addCallback(function(data) { //callback for RA info query
   			if (data.msg) {
@@ -1723,7 +1723,7 @@ function grid_B_onSelectionChanged(pane) {
         	store_BRA.storeKind = 'BRA'; //Add custom property storeKind
         	store_BRA.storeGrid = grid_BRA; //Add custom property storeGrid
         	store_BRA.bId = data.request; //Room Assignment Identifiers
-        	
+
         	//Check ASTRA authz and enable/disable 'add room assignment' button
           var bgtOrg = grid.store.getValue(selItem, "ORGANIZATION");
           if (checkAuthz(authz, null, bgtOrg, null)) {
@@ -1735,7 +1735,7 @@ function grid_B_onSelectionChanged(pane) {
 						//console.log('ROOM NOT AUTHORIZED');
 						grid_BRA.layout.cells[0].name = getEditHeader(pane, true);
           }
-          
+
         	grid_BRA.noDataMessage = 'No room assignments.';
         	grid_BRA.selection.clear();
         	grid_BRA.setStore(store_BRA);
@@ -1774,7 +1774,7 @@ function grid_R_onSelectionChanged(pane) {
   		grid_RAO.setStore(store_empty); //ROOM ASSIGNMENT OCCUPANT GRID
   		grid_RAU.noDataMessage = '';
       grid_RAU.setStore(store_empty); //ROOM ASSIGNMENT USE GRID
-  		
+
   		if (selected.length == 1) {
   			var selItem = selected[0];
   			var raFac = grid_R.store.getValue(selItem, "FACILITY_CODE");
@@ -1782,7 +1782,7 @@ function grid_R_onSelectionChanged(pane) {
   			var raRm = grid_R.store.getValue(selItem, "ROOM_NUMBER");
 				var raRmOrg = grid_R.store.getValue(selItem, "ORGANIZATION");
 				var raRmOrgName = grid_R.store.getValue(selItem, "ORG_NAME");
-  			
+
   			grid_RA.noDataMessage = 'Loading..';
   			grid_RA.setStore(store_empty);
   			var getRA_deferred = submitQuery(dojo.toJson({"FACILITY_CODE":raFac,"ROOM_NUMBER":raRm}),"dataviewer/php/getRA.php");
@@ -1814,7 +1814,7 @@ function grid_R_onSelectionChanged(pane) {
 						//store_RA.raId["ORGANIZATION"] = raRmOrg;
 						//store_RA.raId["ORG_NAME"] = raRmOrgName;
           	//store_RA.oldSelectionIdx = -1;
-          	
+
           	//Check ASTRA authz and enable/disable 'add room assignment' button
             var roomOrg = grid_R.store.getValue(selItem, "ORGANIZATION");
             if (checkAuthz(authz, raFacNum, roomOrg, null)) {
@@ -1826,7 +1826,7 @@ function grid_R_onSelectionChanged(pane) {
   						//console.log('ROOM NOT AUTHORIZED');
   						grid_RA.layout.cells[0].name = getEditHeader(pane, true);
             }
-            
+
           	grid_RA.noDataMessage = 'No room assignments.';
           	grid_RA.selection.clear();
           	grid_RA.setStore(store_RA);
@@ -1870,7 +1870,7 @@ function grid_RA_onSelectionChanged(pane) {
 		var grid_RAO = pane.grids.grid_RAO;
 		var grid_RAU = pane.grids.grid_RAU;
 		//var selected = grid_RA.selection.getSelected();
-		
+
 		//Clear RA subgrid datastores
 	  grid_RAB.noDataMessage = '';
 		grid_RAB.setStore(store_empty); //ROOM ASSIGNMENT BUDGET GRID
@@ -1997,9 +1997,9 @@ function grid_RA_onSelectionChanged(pane) {
           } else {
           	var roomOrg = grid_R.store.getValue(grid_R.selection.getSelected()[0], "ORGANIZATION");
           }
-          
+
           if (checkAuthz(authz, raFacNum, roomOrg, raOrg)) {
-          	//Allow editing and show edit column for grids 
+          	//Allow editing and show edit column for grids
           	dojo.forEach([grid_RAO,grid_RAU,grid_RAB], function(grid) {
           		grid.canEdit = function() {return true};
           		grid.layout.setColumnVisibility(0,true);
@@ -2046,12 +2046,27 @@ function getGridLayout_R(pane) {return [
     			field : "FLOOR_CODE",
     			name : "Floor",
     			editable : false,
-    			width : "4em"
+    			width : "4em",
+					formatter : function(val, rowIdx, cell) {
+    				//console.log(cell);
+						var item = cell.grid.getItem(rowIdx);
+						var roomFacNum = cell.grid.store.getValue(item, "FACILITY_NUMBER");
+
+						return '<a href="https://geosims.cpo.uw.edu/geosims/mapviewer.htm#FACNUM=' + roomFacNum + '&FLOOR=' + val + '" target="_blank" class="gridFloorPlanLink" title="Open floor plan">' + val + '</a>';
+					}
     		},{
     			field : "ROOM_NUMBER",
     			name : "Room Number",
     			editable : false,
-    			width : "5em"
+    			width : "5em",
+					formatter : function(val, rowIdx, cell) {
+    				//console.log(cell);
+						var item = cell.grid.getItem(rowIdx);
+						var roomFacNum = cell.grid.store.getValue(item, "FACILITY_NUMBER");
+						var roomFloor = cell.grid.store.getValue(item, "FLOOR_CODE");
+
+						return '<a href="https://geosims.cpo.uw.edu/geosims/mapviewer.htm#FACNUM=' + roomFacNum + '&FLOOR=' + roomFloor + '&ROOM=' + val + '" target="_blank" class="gridFloorPlanLink" title="Open floor plan">' + val + '</a>';
+					}
     		},{
     			field : "SQUARE_FEET",
     			name : "Square Feet",
@@ -2075,14 +2090,14 @@ function getGridLayout_R(pane) {return [
     				if (cell.options[valIdx]) {
     					var valLabel = cell.options[valIdx];
     				}
-    				
+
           	var helpWidget = new CustomGridCellHelp({
           		label:valLabel,
           		helpClass:cell.field,
           		helpValue:val,
           		tooltip:helpTooltip
           	});
-          	
+
           	return (helpWidget ? helpWidget : valLabel);
     			}
     		},{
@@ -2158,7 +2173,7 @@ function getGridLayout_R(pane) {return [
       			var confirmButtonContainer = dojo.create("div",{},null);
       			dojo.place(confirmButtonContainer,dialogContent,"last");
       			var confirmContainer = dojo.create("div",{innerHTML: '<span class="confirmDate">' + confirmDate + '</span><span class="confirmUserContainer"' + (confirmUser ? '>': 'style="display:none">') + ', by <span class="confirmUser">' + confirmUser + '</span></span>',"class":"confirmText"},null);
-            
+
             var currButtonDialog = new dijit.TooltipDialog({
           		content: dialogContent
       			});
@@ -2168,7 +2183,7 @@ function getGridLayout_R(pane) {return [
               title: "Last confirmed correct",
               dropDown: currButtonDialog
           	});
-          	
+
           	var confirmButton = new dijit.form.Button({
             	label: "Confirm",
             	"class":"queryButton",
@@ -2180,7 +2195,7 @@ function getGridLayout_R(pane) {return [
       					var recordID = [{'FACILITY_CODE':thisRoomFacCode,'ROOM_NUMBER':thisRoomRoomNum}];
       					var onCurrentDeferred = submitQuery(dojo.toJson(recordID),"common/php/updateroomconfirm.php");
       					onCurrentDeferred.addCallback(function(data) {
-      						
+
         					if (data.rowsUpdated === 0) {
                 		postClientMessage({
         							text:"Not updated.",
@@ -2188,19 +2203,19 @@ function getGridLayout_R(pane) {return [
         						});
                 		return;
                 	}
-                	
+
                 	postClientMessage({
                 		text:"Updated.",
                 		type:"success"
                 	});
-                	
+
                 	//Set new confirm date and user values in data store
                 	dojo.disconnect(cell.grid.store.onSetListener);
         					cell.grid.store.setValue(cell.grid.getItem(rowIdx), 'CONFIRM_DATE', data.value['CONFIRM_DATE']);
         					cell.grid.store.setValue(cell.grid.getItem(rowIdx), 'CONFIRM_USER', data.value['CONFIRM_USER']);
         					cell.grid.store.save();
         					cell.grid.store.onSetListener = dojo.connect(cell.grid.store, "onSet", cell.grid.evt.onSetFunction);
-        					
+
         					//Update date and user values in html
       						currButton.set('label',data.value['CONFIRM_DATE']);
       						dojo.forEach([dialogContent,confirmContainer],function(container) {
@@ -2230,10 +2245,10 @@ function getGridLayout_R(pane) {return [
             		currButton.closeDropDown();
             	}
             }).placeAt(confirmButtonContainer);
-            
+
           	dojo.place(confirmContainer,currButton.domNode,"last");
-          	
-          	
+
+
           	return currButton;
     			}
     		}
@@ -2365,7 +2380,7 @@ function getGridLayout_RA(pane, props) {return [
 						cell.customClasses.push('nullErrorClass');
 					}
 					var descVal = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_NAME");
-					return (descVal ? val + ' - ' + descVal : val);
+					return (descVal ? (val == '999999999' ? val + ' - ' + descVal : val + ' - ' + "<a href=\"https://www.washington.edu/home/peopledir/?method=name&length=full&term=" + descVal + "\" title=\"UW Directory\" target=\"_blank\" class=\"gridPersonName\">" + descVal + '</a>') : val);
 				}
 			},{
 				field : "ASSIGNEE_ROOM_PERCENT",
@@ -2560,61 +2575,7 @@ function getGridLayout_BRA(pane, props) {return [
 					var roomDesc = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ROOMDESC");
 					return (facCode ? (roomDesc ? val + ' <span class="BRA-R-info">' + roomDesc + '</span>' : val) : 'Facility required');
 				}
-  		}/**,{    			
-				field : "ROOM_ASSIGNMENT",
-				name : "Room Assignment",
-				editable : true,
-				width : "34em",
-				type : dojox.grid.cells._Widget,
-				widgetClass: dijit.form.ComboBox,
-				widgetProps: {
-					//store:new dojo.data.ItemFileWriteStore({data:{"identifier":"x","label":"z","items":[{"x":"01ID","z":"01VAL"},{"x":"02ID","z":"02VAL"}]}}),
-					store:testSelStoreTwo//,
-					//name:"RAvalue",
-					//maxHeight: -1
-					//store:pane.vars.queryStores.qStore_BRA_RA,
-					//searchAttr:"DESCR",
-          //queryExpr:"*${0}*",
-          //autoComplete:true,
-          //highlightMatch:"all",
-          //labelType:"text",
-          //searchDelay:500,
-          onChange: function(newValue) {
-    				console.log(["onChange",newValue, this]);
-    				var thisWidget = this;
-    				pane.grids.grid_BRA.vars.lookups["ROOM_ASSIGNMENT"][newValue] = {};
-    				dojo.forEach(["ASSIGNEE_ORGANIZATION","ORG_NAME","ASSIGNEE_EMPLOYEE_ID","EMPLOYEE_NAME","ASSIGNEE_ROOM_PERCENT"],function(attr, i) {
-    					//console.log(thisWidget.store.getValue(thisWidget.item, attr));
-    					var attrVal = thisWidget.store.getValue(thisWidget.item, attr);
-    					pane.grids.grid_BRA.vars.lookups["ROOM_ASSIGNMENT"][newValue][attr] = attrVal; //Save each value to this column's lookup table for future use
-    				});
-    				this.set('value',newValue);
-    				//this.grid.edit.apply();
-    				this.focusNode.blur(); //Lose focus on select to submit
-    			}
-  			},
-				formatter : function(val, rowIdx, cell) {
-  				//console.log([val,rowIdx,cell,this]);
-					//if (val === null || val == '') {
-					//	cell.customClasses.push('nullErrorClass');
-					//}
-					//var descVal = '<table class="BRA-RA-subtable"><tr><td>Organization:</td><td>' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ORGANIZATION") + ' - ' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ORG_NAME") + '</td></tr><tr><td>Principal<br/>Investigator:</td><td>' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_ID") + ' - ' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_NAME") + '</td></tr></table>';
-					var descVal = '<table class="BRA-RA-subtable"><tr class="BRA-RA-subtable-header"><td>Organization</td><td>Principal Investigator</td><td>Room %</td></tr><tr><td>' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ORGANIZATION") + (cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ORGANIZATION") == '?' ? '' : ' - ' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ORG_NAME")) + '</td><td>' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_ID") + (cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_ID") == '?' ? '' : ' - ' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_NAME")) + '</td><td>' + cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ASSIGNEE_ROOM_PERCENT") + '%</td></tr></table>';
-					var facCode = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "FACILITY_CODE");
-					var roomNum = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "ROOM_NUMBER");
-					if (facCode) {
-						if (roomNum) {
-							return descVal
-						} else {
-							cell.customClasses.push('nullErrorClass');
-							return 'Room required';
-						}
-					} else {
-						cell.customClasses.push('nullErrorClass');
-						return 'Facility and room required';
-					}
-				}
-			}**/,{    			
+  		},{
 				field : "ROOM_ASSIGNMENT",
 				name : "Room Assignment",
 				editable : true,
@@ -2786,7 +2747,7 @@ function getGridLayout_RAO(pane) {return [
 						cell.customClasses.push('nullErrorClass');
 					}
 					var descVal = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_NAME");
-					return (descVal ? val + ' - ' + descVal : val);
+					return (descVal ? val + ' - ' + "<a href=\"https://www.washington.edu/home/peopledir/?method=name&length=full&term=" + descVal + "\" title=\"UW Directory\" target=\"_blank\" class=\"gridPersonName\">" + descVal + '</a>': val);
 				}
 			}]
 		}
@@ -2821,7 +2782,7 @@ function getGridLayout_RAU(pane) {return [
 					var valIdx = dojo.indexOf(cell.values, val.replace(/&amp;/g, "&"));  //Search for value in value list.  Decode any ampersands.
 					if (cell.options[valIdx]) {
 						var valLabel = cell.options[valIdx];
-    				
+
           	var helpWidget = new CustomGridCellHelp({
           		label:valLabel,
           		helpClass:cell.field,
@@ -2864,7 +2825,7 @@ function formatterEdit(val, rowIdx, cell) {
 			var item = grid.getItem(rowIdx);
 			var roomOrg = grid.store.getValue(item, "ROOM_ORG");
 		} else {
-  		
+
 			var grid = cell.grid.pane.grids.grid_R;
 			var item = grid.selection.getSelected()[0];
 			var roomOrg = grid.store.getValue(item, "ORGANIZATION");
@@ -2952,15 +2913,15 @@ function checkChildAuthz(inCell, inRowIndex) {
 
 //Function called when a field in a store has been set
 function onSetFunction(setitem, attr, oldVal, newVal) {
-	
+
 	//console.log('UPDATED ITEM', setitem, this);
 	var store = setitem._S; //var store = this;
-	
+
 	//Disconnect onSelect listener
 	if (store.storeGrid.evt && store.storeGrid.evt.onSelected) {
 		dojo.disconnect(store.storeGrid.evt.onSelected);
 	}
-	
+
 	if (oldVal == newVal) {
 		if ("undefined" != typeof store.oldSelectionIdx) {
 			store.storeGrid.selection.setSelected(store.oldSelectionIdx, true);
@@ -3007,10 +2968,10 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 				}
 			});
   	}
-  	
+
 		store.onSetListener = dojo.connect(store, "onSet", store.storeGrid.evt.onSetFunction);
 	}
-	
+
 	//Test to see if this is a new row
 	if (store.getValue(setitem, "FACILITY_CODE") === null && store.getValue(setitem, "ROOM_NUMBER") === null) {
 		var failure = false;
@@ -3091,7 +3052,7 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 		}
 			return;
 		}
-		
+
 		var insertRecord = {
 			recordID:{},
 			insert:{}
@@ -3103,7 +3064,7 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 		store.setValue(setitem, 'ROOM_NUMBER', store.raId['ROOM_NUMBER']);
 		store.onSetListener = dojo.connect(store, "onSet", store.storeGrid.evt.onSetFunction);
 		//console.log(setitem);
-		
+
 		insertRecord.recordID['kind'] = store.storeKind;
 		insertRecord.insert['FACILITY_CODE'] = store.raId['FACILITY_CODE'];
 		insertRecord.insert['ROOM_NUMBER'] = store.raId['ROOM_NUMBER'];
@@ -3135,10 +3096,10 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 			insertRecord.insert['BUDGET_NUMBER'] = store.getValue(setitem, "BUDGET_NUMBER");
 			insertRecord.insert['PRIMARY_ROOM'] = store.getValue(setitem, "PRIMARY_ROOM");
 		}
-		
+
 		var onInsertDeferred = submitQuery(dojo.toJson({"insertRecord":insertRecord}),"common/php/insertroominfo.php");
 		onInsertDeferred.addCallback(function(data) {
-			
+
 				//grid_RA.store.oldSelectionIdx =
 				//store.storeGrid.evt.onSelected = dojo.connect(store,"onSelectionChanged",function() {grid_RA_onSelectionChanged(store.storeGrid.pane);});
 			//}
@@ -3158,10 +3119,10 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 		});
 
 		return;
-		
+
 	}
-	
-	
+
+
 	jsonVal = {
 		updateRecord:{
 			recordID:{},
@@ -3224,13 +3185,13 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 	}
 	//Define attribute and value to update
 	jsonVal.updateRecord.update[attr] = newVal;
-	
+
 	//If BUDGET_NUMBER is being updated, also update FISCAL_YEAR_ENTERED
 	if (attr == 'BUDGET_NUMBER') {
 		jsonVal.updateRecord.update['FISCAL_YEAR_ENTERED'] = jsonVal.updateRecord.recordID['FISCAL_YEAR_ENTERED']; //Add FISCAL_YEAR_ENTERED to update array
 		jsonVal.updateRecord.recordID['FISCAL_YEAR_ENTERED'] = oldFyVal; //Set recordID val for FY back to original value
 	}
-	
+
 	var onSetDeferred = submitQuery(dojo.toJson({"updateRecord":jsonVal.updateRecord}),"common/php/updateroominfo.php");
 	onSetDeferred.addCallback(function(data) {
 		crudCallback(store.storeGrid.pane.grids, data, jsonVal.updateRecord);
@@ -3248,12 +3209,12 @@ function onSetFunction(setitem, attr, oldVal, newVal) {
 function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
 	console.log('UPDATED BRA ITEM', setitem, attr, oldVal, newVal, this);
 	var store = this;
-	
+
 	//Disconnect onSelect listener
 	if (store.storeGrid.evt && store.storeGrid.evt.onSelected) {
 		dojo.disconnect(store.storeGrid.evt.onSelected);
 	}
-	
+
 	if (oldVal == newVal) {
 		if (store.oldSelectionIdx) {
 			store.storeGrid.selection.setSelected(store.oldSelectionIdx, true);
@@ -3263,16 +3224,16 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
 		}
 		return false;
 	}
-	
+
 	if (attr == "FACILITY_CODE") {
-		
+
 	} else if (attr == "ROOM_NUMBER") {
-		
+
 	} else if (attr == "ROOM_ASSIGNMENT") {
 		console.log('new val for ROOM_ASSIGNMENT: ' + newVal);
 		if (newVal == "" || "undefined" === typeof store.storeGrid.vars.lookups["ROOM_ASSIGNMENT"][newVal]) return false; //Don't accept empty value
 		//Disconnect onSet listener
-		
+
 		var newRA = store.storeGrid.vars.lookups["ROOM_ASSIGNMENT"][newVal];
 		var oldVals = {};
 		oldVals['ORGANIZATION'] = store.getValue(setitem, "ORGANIZATION");
@@ -3295,7 +3256,7 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
 		//Update/insert row in database table blg.rooms_vs_grants, set organization and employee_id
 		//return false;
 	}
-	
+
 	//Update associated name value if ID value is updated/inserted
 	if (dojo.indexOf(["FACILITY_CODE","ROOM_NUMBER","ORGANIZATION","EMPLOYEE_ID","OCCUPANT_EID","BUDGET_NUMBER"],attr) > -1) {
 		dojo.disconnect(store.onSetListener);
@@ -3335,7 +3296,7 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
   	}
 		store.onSetListener = dojo.connect(store, "onSet", store.storeGrid.evt.onSetFunction);
 	}
-	
+
 	//If this is a new record to insert
 	if (store.getValue(setitem, "isInsert") == true) {
 		if (store.getValue(setitem, "FACILITY_CODE") === null || store.getValue(setitem, "ROOM_NUMBER") === null) {// || store.getValue(setitem, "ORGANIZATION") === null || store.getValue(setitem, "ORGANIZATION") == "" || store.getValue(setitem, "EMPLOYEE_ID") === null || store.getValue(setitem, "EMPLOYEE_ID") == "") {
@@ -3345,13 +3306,13 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
 			}
 			return;
 		}
-		
+
 		//New insert record request
 		var insertRecord = {
 			recordID:{},
 			insert:{}
 		};
-		
+
 		insertRecord.recordID['kind'] = store.storeKind;
 		insertRecord.insert['FISCAL_YEAR_ENTERED'] = store.getValue(setitem, "FISCAL_YEAR_ENTERED");
 		insertRecord.insert['BUDGET_NUMBER'] = store.getValue(setitem, "BUDGET_NUMBER");
@@ -3360,14 +3321,14 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
 		insertRecord.insert['ORGANIZATION'] = store.getValue(setitem, "ORGANIZATION");
 		insertRecord.insert['EMPLOYEE_ID'] = store.getValue(setitem, "EMPLOYEE_ID");
 		insertRecord.insert['PRIMARY_ROOM'] = store.getValue(setitem, "PRIMARY_ROOM");
-		
+
 		//Submit insert record to database
 		var onInsertDeferred = submitQuery(dojo.toJson({"insertRecord":insertRecord}),"common/php/insertroominfo.php");
-		
+
 		dojo.disconnect(store.onSetListener);
 		store.setValue(setitem, "isInsert", false); //Change isInsert to false to make sure additional changes are handled as updates
 		store.onSetListener = dojo.connect(store, "onSet", store.storeGrid.evt.onSetFunction);
-		
+
 		onInsertDeferred.addCallback(function(data) {
 			dojo.disconnect(store.onSetListener);
 			//store.setValue(setitem, "isInsert", false); //Remove this row if above 'isInsert' code works as intended
@@ -3394,7 +3355,7 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
   			update:{}
   		}
   	};
-  	
+
 		jsonVal.updateRecord.recordID['kind'] = store.storeKind;
 		jsonVal.updateRecord.recordID['FACILITY_CODE'] = store.getValue(setitem, "FACILITY_CODE");
 		jsonVal.updateRecord.recordID['ROOM_NUMBER'] = store.getValue(setitem, "ROOM_NUMBER");
@@ -3403,22 +3364,22 @@ function grid_BRA_onSetFunction(setitem, attr, oldVal, newVal) {
 		jsonVal.updateRecord.recordID['FISCAL_YEAR_ENTERED'] = store.getValue(setitem, "FISCAL_YEAR_ENTERED");
 		jsonVal.updateRecord.recordID['BUDGET_NUMBER'] = store.getValue(setitem, "BUDGET_NUMBER");
 		//jsonVal.updateRecord.recordID['FISCAL_YEAR_ENTERED'] = store.getValue(setitem, "FISCAL_YEAR_ENTERED");
-		
+
 		//If a record ID key is updated, set the key value to the old value
   	if (attr in jsonVal.updateRecord.recordID) {
   		//console.log('RA attr: ',jsonVal.updateRecord.recordID);
   		jsonVal.updateRecord.recordID[attr] = oldVal
   	}
-		
+
   	//Define attribute and value to update
   	jsonVal.updateRecord.update[attr] = newVal;
-  	
+
   	if (attr == 'ROOM_ASSIGNMENT') {
   		jsonVal.updateRecord.recordID['ORGANIZATION'] = oldVals['ORGANIZATION'];
 			jsonVal.updateRecord.recordID['EMPLOYEE_ID'] = oldVals['EMPLOYEE_ID'];
 			jsonVal.updateRecord.update = newVals;
   	}
-  	
+
   	var onSetDeferred = submitQuery(dojo.toJson({"updateRecord":jsonVal.updateRecord}),"common/php/updateroominfo.php");
   	onSetDeferred.addCallback(function(data) {
   		dojo.disconnect(store.onSetListener);
@@ -3564,7 +3525,7 @@ function crudCallback(grids, data, request) {
 		grids.grid_R.evt.onSelected = dojo.connect(grids.grid_R,"onSelectionChanged",function() {grid_R_onSelectionChanged(grids.grid_R.pane);});
 	} else if (storeKind == 'RA') {
 		grids.grid_RA.store.save();
-		
+
 		if (grids.grid_RAO.store.isDirty()) {
 			grids.grid_RAO.store.save();
 		}
@@ -3583,7 +3544,7 @@ function crudCallback(grids, data, request) {
 	} else if (storeKind == 'BRA') {
 		grids.grid_BRA.store.save();
 	}
-	
+
 	postClientMessage({
 		text:"Updated.",
 		type:"success"
@@ -3618,7 +3579,7 @@ function crudErrorback(grids, storeKind) {
 	} else if (storeKind == 'BRA') {
 		grids.grid_BRA.store.revert();
 	}
-	
+
 	postClientMessage({
 		text:"Not updated.",
 		type:"failure"

@@ -21,7 +21,7 @@ body {
 	padding-right 0px;
 	font-style:italic;
 	font-weight:bold;
-	font-family: Verdana; 
+	font-family: Verdana;
 	color: #222;
 	text-decoration: none;
 	word-spacing: normal;
@@ -33,7 +33,7 @@ body {
 #version {
 	margin: 0px;
 	padding: 0px;
-	font-family: Verdana; 
+	font-family: Verdana;
 	color: #222;
 	text-decoration: none;
 	word-spacing: normal;
@@ -69,7 +69,7 @@ span#userwelcome {
 	cursor: hand;
 	cursor: pointer;
 }
-      
+
 .nullErrorClass {
 	background-color:#FFA5A5;
 	color:red;
@@ -323,6 +323,26 @@ p.msgItem.failure span{
 
 .alignRight {
 	text-align:right;
+}
+
+a.gridFloorPlanLink {
+	color: inherit;
+	text-decoration: none;
+}
+
+a.gridPersonName {
+	color: inherit;
+	text-decoration: none;
+}
+
+a.gridFloorPlanLink:hover {
+	color: #000;
+	text-decoration: underline dotted;
+}
+
+a.gridPersonName:hover {
+	color: #000;
+	text-decoration: underline dotted;
 }
 
 #infoSummaryContainer {
