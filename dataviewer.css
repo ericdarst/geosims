@@ -20,7 +20,7 @@ body {
 	padding: 5px;
 	font-style:italic;
 	font-weight:bold;
-	font-family: Verdana; 
+	font-family: Verdana;
 	color: #222;
 	text-decoration: none;
 	word-spacing: normal;
@@ -33,7 +33,7 @@ body {
 	margin: 0px;
 	padding: 5px;
 	font-weight:bold;
-	font-family: Verdana; 
+	font-family: Verdana;
 	color: #222;
 	text-decoration: none;
 	word-spacing: normal;
@@ -45,7 +45,7 @@ body {
 #version {
 	margin: 0px;
 	padding: 0px;
-	font-family: Verdana; 
+	font-family: Verdana;
 	color: #222;
 	text-decoration: none;
 	word-spacing: normal;
@@ -482,6 +482,26 @@ p.msgItem.failure span{
 .gridTitleRowSummary {
 	margin-left: 3px;
 	font-weight: normal;
+}
+
+a.gridFloorPlanLink {
+	color: inherit;
+	text-decoration: none;
+}
+
+a.gridPersonName {
+	color: inherit;
+	text-decoration: none;
+}
+
+a.gridFloorPlanLink:hover {
+	color: #000;
+	text-decoration: underline dotted;
+}
+
+a.gridPersonName:hover {
+	color: #000;
+	text-decoration: underline dotted;
 }
 
 #infoSummaryContainer {

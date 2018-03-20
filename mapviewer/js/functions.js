@@ -886,7 +886,7 @@ function mapOnLoad() {
 						cell.customClasses.push('nullErrorClass');
 					}
 					var descVal = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_NAME");
-					return (descVal ? val + ' - ' + descVal : val);
+					return (descVal ? (val == '999999999' ? val + ' - ' + descVal : val + ' - ' + "<a href=\"https://www.washington.edu/home/peopledir/?method=name&length=full&term=" + descVal + "\" title=\"UW Directory\" target=\"_blank\" class=\"gridPersonName\">" + descVal + '</a>') : val);
 				}
 			},{
 				field : "ASSIGNEE_ROOM_PERCENT",
@@ -1026,7 +1026,7 @@ function mapOnLoad() {
 						cell.customClasses.push('nullErrorClass');
 					}
 					var descVal = cell.grid.store.getValue(cell.grid.getItem(rowIdx), "EMPLOYEE_NAME");
-					return (descVal ? val + ' - ' + descVal : val);
+					return (descVal ? val + ' - ' + "<a href=\"https://www.washington.edu/home/peopledir/?method=name&length=full&term=" + descVal + "\" title=\"UW Directory\" target=\"_blank\" class=\"gridPersonName\">" + descVal + '</a>': val);
 				}
 			}]
 		}
