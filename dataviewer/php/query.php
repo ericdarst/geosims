@@ -43,7 +43,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
           return false;
       }
   		$queryStr = '';
-  		
+
   		//Check where condition items
   		foreach ($keys as $idx => $val) {
     		if ($idx <> 0) {
@@ -66,7 +66,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     			$condition = $val['item'][0];
     			//if (isset($condition['field']) && isset($condition['predicate']) && isset($condition['value'])) {
     				//echo $condition['field'].' '.$condition['predicate'].' '.$condition['value'];
-    				if (isset($condition['field']) && array_key_exists($condition['field'],$validKeys['where'])) { 
+    				if (isset($condition['field']) && array_key_exists($condition['field'],$validKeys['where'])) {
     				  if (isset($condition['predicate']) && isset($condition['value']) && array_key_exists($condition['predicate'],$validKeys['predicate'])) {
       					//echo $validKeys['where'][$condition['field']][0].' '.$validKeys['predicate'][$condition['predicate']][0].' '.$condition['value'];
       					$bindVar = $validKeys['where'][$condition['field']];
@@ -109,8 +109,8 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     	}
     	return array($queryStr,$bindArr,$joinArr);
     }
-    
-    //Process query variables to 
+
+    //Process query variables to
     function getQuery($from, $keys, $validKeys, $bindArr) {
     	//Check where items for conditions, get the query's where str, bind vars array, and join str array
     	$joinArr = array(); //Initialize empty join array
@@ -119,7 +119,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     	$queryStr_where = $queryVars[0];
     	$bindArr = $queryVars[1];
     	$joinArr = $queryVars[2];
-    	
+
     	$queryStr_from = ''; //String containing SQL "from" query
     	//Check column table alias for any needed joins
     	//$columns = explode(',',$validKeys['from'][$from][1]);
@@ -129,7 +129,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     		$queryStr_from .= $val[0];
     		$joinArr = getJoinArr($joinArr, $val[0], $from, $validKeys, true);
   		}
-    	
+
     	//Check join array table alias for any needed joins
   		foreach ($joinArr as $idx => $val) {
   			$wordArr = explode(' ',$val);
@@ -142,7 +142,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     	ksort($joinArr);
   		return array($queryStr_where,$bindArr,$joinArr,$queryStr_from);
   	}
-    
+
     //Process query results
     function getResults($stid) {
     	$resultArr = array();
@@ -159,14 +159,14 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     	}
     	return $resultArr;
     }
-    
+
   	//Define return array
   	$arr = array(
   		'request' => json_decode($_POST["json"], true)); //Populate request array
 
   	$fromVar = $arr['request']['from'];
   	$whereVars = $arr['request']['where'];
-  	
+
   	$validKeys = array();
   	$validKeys['from'] = array('R' => array($tableRoom.' R',
         																		array(array("R.FACILITY_CODE"),//,SQLT_CHR),
@@ -189,6 +189,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
           																					array("F.FACILITY_NUMBER"),//,SQLT_CHR),
         																						array("F.FACILITY_CODE + ' - ' + F.LONG_NAME + ' - ' + CAST(F.FACILITY_NUMBER as nvarchar) as FACDESC"),
         																						array("RA.ROOM_NUMBER"),
+																										array("R.FLOOR_CODE"),
         																						array("R.ORGANIZATION as ROOM_ORG"),
         																						array("RA.ASSIGNEE_ORGANIZATION"),
         																						array("O.OrgName as ORG_NAME"),
@@ -223,7 +224,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     												'O' => array(15,array('R' => 'LEFT JOIN ' . $tableOrg . ' O ON R.ORGANIZATION = O.OrgCode ','RA' => 'LEFT JOIN ' . $tableOrg . ' O ON RA.ASSIGNEE_ORGANIZATION = O.OrgCode ')),
     												'OD' => array(16,array('R' => 'LEFT JOIN '.$tableOrgDept.' OD ON SUBSTRING(R.ORGANIZATION,1,7) = OD.ORG_DEPT ','RA' => 'LEFT JOIN '.$tableOrgDept.' OD ON SUBSTRING(RA.ASSIGNEE_ORGANIZATION,1,7) = OD.ORG_DEPT ')),
     												'E' => array(14,array('RA' => 'LEFT JOIN ' . $tableEmployee . ' E ON RA.ASSIGNEE_EMPLOYEE_ID = E.EmployeeID ')));
-    	
+
     	$validKeys['where'] = array('FACILITY_CODE' => array($fromVar.'.FACILITY_CODE',null,':rfac_',null,4,null),//,SQLT_CHR),
       														'R.FLOOR_CODE' => array('R.FLOOR_CODE',null,':rflr_',null,13,null),//,SQLT_CHR),
       														'ROOM_NUMBER' => array($fromVar.'.ROOM_NUMBER',null,':rnum_',null,13,null),//,SQLT_CHR),
@@ -261,7 +262,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
     																	'<' => array('<'),
     																	'LIKE' => array('LIKE'),
     																	'NOT LIKE' => array('NOT LIKE'));
-    	
+
     	$conn = createConn($db_username,$db_password,$db_server,$db_database);  //Connection property variables defined in login.php
 
     	$returnArr = getQuery($fromVar, $whereVars, $validKeys, array());
@@ -281,7 +282,7 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
         					. $qOrder;
         					//. ' ORDER BY '.$fromVar.'.FACILITY_CODE,'.$fromVar.'.ROOM_NUMBER';
 
-        
+
         //echo $queryStr;
         $stid = odbc_prepare($conn, $queryStr); //Process Query
         //Bind params to query
@@ -312,4 +313,3 @@ if ((!empty($_POST["json"])) && (isset($_SERVER['HTTP_UWNETID']))) {
   	echo json_encode($arr['results']);
   }
 }
-
