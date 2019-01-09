@@ -38,7 +38,7 @@ function submitQuery_get(content,queryUrl) {
 function setCustomClasses() {
 	dojo.provide("CustomGridCellHelp");
 	dojo.require("dijit._WidgetBase");
-	
+
 	dojo.declare("CustomGridCellHelp", [dijit._WidgetBase], {
 		//params
 		label:'',
@@ -48,12 +48,12 @@ function setCustomClasses() {
 		tooltip: null,
 		_helpLabel: ' [*]',
 		_helpNode: null,
-		
+
 		buildRendering: function(){
 			this.domNode = dojo.create("div",{innerHTML: this.label,"class":"itemText"},null);
 			this._helpNode = dojo.create("span",{innerHTML: this._helpLabel,"class":"itemHelp","data-sims-helpClass":this.helpClass,"data-sims-helpValue":this.helpValue},this.domNode);
 		},
-		
+
 		postCreate: function(){
 			if (this.tooltip) dojo.connect(this._helpNode, "onclick", this, function(e) {
 				//dojo.stopEvent(e);
@@ -80,13 +80,13 @@ function setCustomClasses() {
     	}
     	this.inherited("close", arguments);
     },
-    
+
   	open: function(/*DomNode*/ target){
   		if (target) {
   			//Connect events
   			this.onmouseleave_connHandle = this.connect(target, "onmouseleave", "_onTargetMouseLeave");
 				this.onblur_connHandle = this.connect(target, "onblur", "_onTargetBlur");
-        
+
 				//Set tooltip label
     		if (this.definitions && this.defClassAttr && this.defValueAttr) {
       		var defClass = dojo.attr(target,this.defClassAttr);
@@ -152,7 +152,7 @@ function setCustomClasses() {
 				newValue = this.store.getValue(node.item, this.searchAttr);// : node.item[this.searchAttr]).toString();
 				this.set('item', node.item, false, newValue);
 			}
-			
+
 			// get the text that the user manually entered (cut off autocompleted text)
 			//this.focusNode.value = this.focusNode.value.substring(0, this._lastInput.length);
 			this.focusNode.value = this._lastInput;
@@ -163,7 +163,7 @@ function setCustomClasses() {
 			//this._autoCompleteText(newValue);
   	}
   });
-  
+
   //Modify default FilteringSelect _autoCompleteText function to not update the text node's value until focus is lost
   dojo.provide("BRAFilteringSelect");
   dojo.declare("BRAFilteringSelect", dijit.form.FilteringSelect, {
@@ -195,7 +195,7 @@ function setCustomClasses() {
 			//this.inherited("_announceOption", arguments);
 			//this.focusNode.value = this._lastInput;
 			//return;
-			
+
 			if(!node){
 				return;
 			}
@@ -212,7 +212,7 @@ function setCustomClasses() {
 				newValue = this.store.getValue(node.item, this.searchAttr);// : node.item[this.searchAttr]).toString();
 				this.set('item', node.item, false, newValue);
 			}
-			
+
 			// get the text that the user manually entered (cut off autocompleted text)
 			//this.focusNode.value = this.focusNode.value.substring(0, this._lastInput.length);
 			this.focusNode.value = this._lastInput;
@@ -223,7 +223,7 @@ function setCustomClasses() {
 			//this._autoCompleteText(newValue);
   	}
   });
-	
+
 	//Modify default QueryReadStore to strip '*' chars from query
   dojo.provide("BRAQueryReadStore");
   dojo.declare("BRAQueryReadStore", dojox.data.QueryReadStore, {
@@ -260,7 +260,7 @@ function setCustomClasses() {
   		return this.inherited("fetch", arguments);
   	}
   });
-  
+
 	//Modify default QueryReadStore to strip '*' chars from query
   dojo.provide("CustomQueryReadStore");
   dojo.declare("CustomQueryReadStore", dojox.data.QueryReadStore, {
@@ -340,12 +340,12 @@ function getAuthz(authzButton, isReload) {
 		var authzExpires = data.expires;
 
 		var dialogContainer = dojo.create("div",{},null);
-		
+
 		var authzCount = 0;
 		for (var authzItem in authz) {
 			authzCount++;
   	}
-  	
+
   	if (authzCount > 0) {
   		dojo.create('span',{'class':'fontBold','innerHTML':'Authorizations'},dialogContainer);
   		var authzList = dojo.create('ul',{},dialogContainer);
@@ -373,7 +373,7 @@ function getAuthz(authzButton, isReload) {
   			});
   		}
     } else {
-  		dojo.create('p',{'innerHTML':'You have no authorizations. Contact <a href=\"mailto:simshelp@uw.edu\">simshelp@uw.edu</a> for assistance.'},dialogContainer);
+  		dojo.create('p',{'innerHTML':'You have no authorizations. Contact <a href=\"mailto:mapping@uw.edu\">mapping@uw.edu</a> for assistance.'},dialogContainer);
   	}
 		new dijit.form.Button({
   		label: "Reload",
@@ -382,7 +382,7 @@ function getAuthz(authzButton, isReload) {
   			getAuthz(authzButton, true);
   		}
   	}).placeAt(dialogContainer);
-		
+
 		authzButton.dropDown.set('content',dialogContainer);
 		authzButton.set('label','<span class="fontBold">' + netid + '</span>');
 
@@ -426,7 +426,7 @@ function checkAuthz(authz,facNum,ownerOrg,raOrg) {
 			return true;
 		}
 	}
-	
+
 	//Test organization-based authz
 	if (raOrg) {
 		var testOrgs = [raOrg, ownerOrg];
@@ -496,7 +496,7 @@ function hasAuthz(authz) {
 	for (var authzItem in authz) {
 		authzCount++;
   }
-  
+
   if (authzCount > 0) {
   	return true;
   } else {
@@ -508,7 +508,7 @@ function showNotAuthzd() {
 	if ("undefined" == typeof notAuthzDialog){
   	notAuthzDialog = new dijit.Dialog({
     	title: "Not Authorized",
-    	content: "You are not authorized to view space inventory data. Contact <a href=\"mailto:simshelp@uw.edu\">simshelp@uw.edu</a> for assistance.",
+    	content: "You are not authorized to view space inventory data. Contact <a href=\"mailto:mapping@uw.edu\">mapping@uw.edu</a> for assistance.",
     	style: "width: 400px"
     });
   }
@@ -599,7 +599,7 @@ function addRow(rowIdx, theGrid) {
 		for (var i=0;i<newRows.length;i++) {
 			theGrid.store.setValue(newRows[i], 'ASSIGNEE_ROOM_PERCENT', newRowsPercent)
 		}
-		
+
 		//Get the org if no ra rows or null
 		if (theGrid.rowCount == 0) {
 			var roomOrg = theGrid.store.roomStore.getValue(theGrid.store.roomItem, "ORGANIZATION");
@@ -608,7 +608,7 @@ function addRow(rowIdx, theGrid) {
 			var roomOrg = '';
 			var roomOrgName = '';
 		}
-		
+
 		var newItem = {
 			isInsert: true,
 			FACILITY_NUMBER: theGrid.store.raId["FACILITY_NUMBER"],
@@ -653,7 +653,7 @@ function addRow(rowIdx, theGrid) {
 		for (var i=0;i<newRows.length;i++) {
 			theGrid.store.setValue(newRows[i], 'FUNCTIONAL_USE_PERCENT', newRowsPercent)
 		}
-		
+
 		var newItem = {
 			isInsert: true,
 			FACILITY_NUMBER: theGrid.store.raId["FACILITY_NUMBER"],
@@ -700,7 +700,7 @@ function addRow(rowIdx, theGrid) {
 function postClientMessage(msg) {
 	var text = msg.text;
 	var type = msg.type;
-	
+
 	var newMsg = dojo.create("p", {
 			innerHTML: '<span>'+text+'</span>',
 			"class": "msgItem " + type
@@ -714,6 +714,5 @@ function postClientMessage(msg) {
 			dojo.destroy(newMsg);
 		},2000);
 	},2000);
-	
-}
 
+}
