@@ -293,7 +293,7 @@ function dojoOnLoad() {
 			roomsFeatureLayer.show();
 		}
 	});
-	var menuItem7 = new dijit.MenuItem({
+	var menuItem2 = new dijit.MenuItem({
 		label: "Subdivision",
 		id: "classifyMenuItem-O.ORG_NAME",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -302,7 +302,7 @@ function dojoOnLoad() {
 
 		}
 	});
-	var menuItem2 = new dijit.MenuItem({
+	var menuItem3 = new dijit.MenuItem({
 		label: "Department",
 		id: "classifyMenuItem-OD.ORG_DEPT_NAME",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -311,7 +311,7 @@ function dojoOnLoad() {
 
 		}
 	});
-	var menuItem3 = new dijit.MenuItem({
+	var menuItem4 = new dijit.MenuItem({
 		label: "College",
 		id: "classifyMenuItem-OD.ORG_COLLEGE_NAME",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -319,7 +319,7 @@ function dojoOnLoad() {
 			classSelOnChange('OD.ORG_COLLEGE_NAME');
 		}
 	});
-	var menuItem4 = new dijit.MenuItem({
+	var menuItem5 = new dijit.MenuItem({
 		label: "Primary Use",
 		id: "classifyMenuItem-RT.PRIMARY_USE",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -327,7 +327,7 @@ function dojoOnLoad() {
 			classSelOnChange('RT.PRIMARY_USE');
 		}
 	});
-	var menuItem5 = new dijit.MenuItem({
+	var menuItem6 = new dijit.MenuItem({
 		label: "Space Category",
 		id: "classifyMenuItem-RT.SPACE_CATEGORY",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -335,7 +335,7 @@ function dojoOnLoad() {
 			classSelOnChange('RT.SPACE_CATEGORY');
 		}
 	});
-	var menuItem6 = new dijit.MenuItem({
+	var menuItem7 = new dijit.MenuItem({
 		label: "Occupancy",
 		id: "classifyMenuItem-RV.Occupancy",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -343,7 +343,7 @@ function dojoOnLoad() {
 			classSelOnChange('RV.Occupancy');
 		}
 	});
-	var menuItem7 = new dijit.MenuItem({
+	var menuItem8 = new dijit.MenuItem({
 		label: "Last Confirmed",
 		id: "classifyMenuItem-R.CONFIRM_DATE",
 		//iconClass: "dijitEditorIcon dijitEditorIconSave",
@@ -352,13 +352,13 @@ function dojoOnLoad() {
 		}
 	});
 	classMenu.addChild(menuItem1);
-	classMenu.addChild(menuItem7);
 	classMenu.addChild(menuItem2);
 	classMenu.addChild(menuItem3);
 	classMenu.addChild(menuItem4);
 	classMenu.addChild(menuItem5);
 	classMenu.addChild(menuItem6);
 	classMenu.addChild(menuItem7);
+	classMenu.addChild(menuItem8);
 	var classButton = new dijit.form.DropDownButton({
     label: "Classify",
     name: "classButton",
