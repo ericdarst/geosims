@@ -156,12 +156,10 @@ function dojoOnLoad() {
 	roomsFeatureLayer.setDefinitionExpression("BUILDINGID = '' AND FLOORCODE = ''");
 
 	backgroundServiceLayer = new esri.layers.ArcGISTiledMapServiceLayer("https://geosims.cpo.uw.edu/arcgis/rest/services/Wayfinding/Basemap/MapServer");
-	bldgOutlinesServiceLayer = new esri.layers.ArcGISDynamicMapServiceLayer("https://geosims.cpo.uw.edu/arcgis/rest/services/Wayfinding/Basemap_Dyn/MapServer");
-	bldgOutlinesServiceLayer.setVisibleLayers([0,6]);
 
 	basemap =  new esri.layers.ArcGISTiledMapServiceLayer("https://server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer");
 
-	facQueryTask = new esri.tasks.QueryTask("https://geosims.cpo.uw.edu/arcgis/rest/services/Wayfinding/Basemap/MapServer/6");
+	facQueryTask = new esri.tasks.QueryTask("https://geosims.cpo.uw.edu/arcgis/rest/services/Wayfinding/Basemap/MapServer/46");
 
 	//Connect layers to events
 	dojo.connect(roomsServiceLayer, "onError", function(error) {
@@ -233,7 +231,6 @@ function dojoOnLoad() {
 	});
 
 	map.addLayer(basemap,0); //Add ESRI basemap at index 0 behind UW basemap
-	map.addLayer(bldgOutlinesServiceLayer);
 	map.addLayer(backgroundServiceLayer); //Add UW basemap
 
 	//Create layer checkboxes
@@ -678,16 +675,6 @@ function mapOnLoad() {
 			basemap.hide();
 		} else {
 			basemap.show();
-		}
-	});
-
-	dojo.connect(map,"onZoomEnd", function(extent, zoomFactor, anchor, level) {
-		//Hide dynamic bldgs basemap past zoom level
-		console.log(level);
-		if (level < 13) {
-			bldgOutlinesServiceLayer.hide();
-		} else {
-			bldgOutlinesServiceLayer.show();
 		}
 	});
 
